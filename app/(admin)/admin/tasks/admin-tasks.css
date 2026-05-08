@@ -1,0 +1,516 @@
+/* ===== ADMIN TASKS PAGE ===== */
+.admin-tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: slideInUp 0.4s ease-out;
+}
+
+/* ── Page header ── */
+.admin-tasks-container > .page-title {
+  margin-bottom: 0;
+}
+
+/* ── Two-column layout ── */
+.admin-tasks-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── Panel shared styles ── */
+.task-form-section,
+.task-list-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.task-form-section {
+  animation: slideInLeft 0.45s ease-out;
+  position: sticky;
+  top: 24px;
+}
+
+.task-list-section {
+  animation: slideInRight 0.45s ease-out;
+}
+
+.task-form-section h2,
+.task-list-section h2 {
+  margin: 0 0 22px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Section title icon ── */
+.title-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.section-title-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Shared section styles (fallback aliases) */
+.admin-form-section,
+.admin-list-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-form-section {
+  animation: slideInLeft 0.45s ease-out;
+}
+
+.admin-list-section {
+  animation: slideInRight 0.45s ease-out;
+}
+
+.section-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-heading::before {
+  content: '';
+  width: 3px;
+  height: 20px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Admin Form ── */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.admin-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-form .form-group label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--background);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-size: 0.9375rem;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background: var(--surface);
+}
+
+.task-form-section textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-row > .form-group {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+  min-width: 120px;
+}
+
+/* ── Admin Task List ── */
+.admin-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 620px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.admin-task-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-task-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.admin-task-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── Individual Task Item ── */
+.admin-task-item {
+  padding: 16px 18px;
+  background: var(--background);
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-task-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gradient-primary);
+  border-radius: 12px 0 0 12px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.admin-task-item:hover {
+  border-color: var(--primary);
+  background: var(--surface);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-task-item:hover::before {
+  opacity: 1;
+}
+
+/* ── Task info (left) ── */
+.task-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-info h3 {
+  margin: 8px 0 4px;
+  font-size: 0.975rem;
+  color: var(--text-main);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.task-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── Edit / Delete buttons ── */
+.task-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.icon-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.icon-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.icon-btn.delete:hover {
+  border-color: var(--danger);
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+/* ── Compact content variant ── */
+.admin-task-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-task-content h4 {
+  margin: 0 0 5px;
+  font-size: 0.9375rem;
+  color: var(--text-main);
+  font-weight: 700;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.admin-task-content p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+/* ── Task meta chips ── */
+.admin-task-meta {
+  display: flex;
+  gap: 6px;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.admin-task-points {
+  font-weight: 800;
+  font-size: 0.975rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  white-space: nowrap;
+}
+
+.admin-task-type {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Action buttons (text style) */
+.admin-task-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.admin-task-action-btn {
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.admin-task-action-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.admin-task-action-btn.delete:hover {
+  border-color: var(--danger);
+  color: white;
+  background: var(--danger);
+}
+
+/* ── Announcement items ── */
+.announcement-item-admin {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition-fast);
+}
+
+.announcement-item-admin:last-child {
+  border-bottom: none;
+}
+
+.announcement-item-admin:hover {
+  padding-left: 8px;
+}
+
+.announcement-item-admin h4 {
+  margin: 0 0 4px;
+  font-size: 0.9375rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.announcement-item-admin p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  line-height: 1.45;
+}
+
+.announcement-date-admin {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* ── Empty State ── */
+.empty-admin-state {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--text-muted);
+}
+
+.empty-admin-state-icon {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.empty-admin-state h4 {
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+/* ── Responsive: Tablet ── */
+@media (max-width: 1100px) {
+  .admin-tasks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-form-section {
+    position: static;
+  }
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 768px) {
+  .admin-tasks-container {
+    gap: 22px;
+  }
+
+  .admin-tasks-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .task-form-section,
+  .task-list-section,
+  .admin-form-section,
+  .admin-list-section {
+    padding: 18px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-task-item {
+    flex-direction: column;
+    padding: 14px;
+  }
+
+  .task-controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .admin-task-meta {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn-primary,
+  .form-actions .btn-secondary {
+    width: 100%;
+  }
+}

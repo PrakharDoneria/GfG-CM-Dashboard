@@ -1,0 +1,135 @@
+/* ===== SUBMISSIONS PAGE ===== */
+.submissions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.summary-card {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+
+.summary-card:hover { transform: translateY(-2px); }
+
+.summary-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.summary-value.success { color: #059669; }
+.summary-value.warning { color: #d97706; }
+.summary-value.primary { color: var(--primary); }
+
+/* Table wrapper handles horizontal scroll on small screens */
+.history-table-wrapper {
+  margin-top: 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 600px; /* force scroll instead of squish */
+}
+
+.history-table th {
+  padding: 14px 16px;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  background: var(--background);
+}
+
+.history-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.history-table tr:last-child td { border-bottom: none; }
+
+.task-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.task-id {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.proof-link {
+  color: var(--primary);
+  text-decoration: underline;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.status-pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status-pill.pending  { background: #fef3c7; color: #92400e; }
+.status-pill.approved { background: #d1fae5; color: #065f46; }
+.status-pill.rejected { background: #fee2e2; color: #b91c1c; }
+
+.feedback-cell {
+  color: var(--text-muted);
+  font-style: italic;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 48px 20px !important;
+  color: var(--text-muted);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .stats-summary { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .summary-card { padding: 16px 12px; }
+  .summary-value { font-size: 1.5rem; }
+}
