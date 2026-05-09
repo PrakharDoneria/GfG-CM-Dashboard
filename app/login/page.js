@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, safeGetSession } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import './login.css';
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { session } = await safeGetSession();
       if (session) {
         const isAdmin = session.user.email.endsWith('@geeksforgeeks.org');
         const role = isAdmin ? 'admin' : 'cm';

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
-import { supabase } from '@/lib/supabase';
+import { supabase, safeGetUser } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import './dashboard.css';
 
@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { user } = await safeGetUser();
       if (!user) {
         router.push('/login');
         return;

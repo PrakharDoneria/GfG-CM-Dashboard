@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { supabase, safeGetSession } from '@/lib/supabase';
 
 export default function Home() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function Home() {
       }
 
       // 2. Fallback to actual session check
-      const { data: { session } } = await supabase.auth.getSession();
+      const { session } = await safeGetSession();
       if (session) {
         const isAdmin = session.user.email.endsWith('@geeksforgeeks.org');
         localStorage.setItem('user_role', isAdmin ? 'admin' : 'cm');
