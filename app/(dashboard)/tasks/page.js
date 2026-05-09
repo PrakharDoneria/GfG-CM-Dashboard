@@ -96,11 +96,29 @@ export default function TasksPage() {
 
   if (loading && !data) return <div className="loading-screen">Loading your tasks...</div>;
 
-  const pendingTasks = allTasks.filter(t => !submittedIds.has(t.id));
+  const taskSubmissions = submissions?.reduce((acc, s) => {
+    if (!acc[s.task_id]) acc[s.task_id] = [];
+    acc[s.task_id].push(s);
+    return acc;
+  }, {}) || {};
+
+  const pendingTasks = allTasks.filter(t => {
+    const subs = taskSubmissions[t.id] || [];
+    const isApproved = subs.some(s => s.status === 'approved');
+    const isPending = subs.some(s => s.status === 'pending');
+    const rejectedCount = subs.filter(s => s.status === 'rejected').length;
+    const maxSubmissions = t.max_submissions || 2;
+
+    if (isApproved || isPending) return false;
+    if (subs.length === 0) return true;
+    return rejectedCount < maxSubmissions;
+  });
+
   const highPriorityCount = pendingTasks.filter(t => t.priority === 'High').length;
   const pointsAvailable = pendingTasks.reduce((acc, t) => acc + t.points_value, 0);
-  const totalSubmitted = submittedIds.size;
-  const progress = allTasks.length > 0 ? Math.round((totalSubmitted / allTasks.length) * 100) : 0;
+  const totalSubmitted = submissions.length;
+  const progress = allTasks.length > 0 ? Math.round((submissions.filter(s => s.status === 'approved').length / allTasks.length) * 100) : 0;
+
 
   return (
     <div className="tasks-container">

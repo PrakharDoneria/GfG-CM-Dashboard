@@ -136,7 +136,7 @@ export default function LoginPage() {
         {loading && <p className="verifying-text">Verifying credentials...</p>}
         
         <div className="login-footer">
-          <p className="made-by">Made with 💚 by <a href="https://github.com/prakhardoneria" target="_blank" rel="noopener noreferrer">@prakhardoneria</a></p>
+          <p className="made-by">Made with 💚 by <a href="https://www.geeksforgeeks.org/" target="_blank" rel="noopener noreferrer">@GeeksforGeeks Community Team</a></p>
         </div>
       </div>
     </div>

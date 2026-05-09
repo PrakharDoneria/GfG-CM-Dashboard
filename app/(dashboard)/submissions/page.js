@@ -11,12 +11,14 @@ export default function SubmissionsPage() {
   
   const fetchSubmissionsData = async () => {
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return [];
     
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('submissions')
       .select(`
         *,
         tasks (
+          id,
           title,
           body,
           points_value
@@ -25,18 +27,23 @@ export default function SubmissionsPage() {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
+    if (error) {
+      console.error('Error fetching submissions:', error);
+      return [];
+    }
     return data || [];
   };
 
   const { data, loading } = useCachedData('user_submissions_cache', fetchSubmissionsData);
   const submissions = data || [];
 
-  if (loading && !data) return <div className="loading-screen">Loading submissions...</div>;
+  if (loading && !data) return <div className="loading-screen">Loading your submissions...</div>;
 
   const approved = submissions.filter(s => s.status === 'approved');
   const pending = submissions.filter(s => s.status === 'pending');
-  const totalPoints = approved.reduce((acc, s) => acc + (s.points_awarded || s.tasks?.points_value || 0), 0);
+  const totalPoints = approved.reduce((acc, s) => acc + (s.points_awarded ?? s.tasks?.points_value ?? 0), 0);
   const approvalRate = submissions.length > 0 ? Math.round((approved.length / submissions.length) * 100) : 0;
+
 
   return (
     <div className="submissions-container">
@@ -100,11 +107,11 @@ export default function SubmissionsPage() {
                 <tr key={s.id} onClick={() => setViewingSub(s)} style={{cursor: 'pointer'}}>
                   <td>
                     <div className="task-cell">
-                      <strong>{s.tasks?.title}</strong>
-                      <span className="task-id">ID: {s.id.slice(0,8)}</span>
+                      <strong>{s.tasks?.title || 'Unknown Task'}</strong>
+                      <span className="task-id">ID: {s.id?.slice(0,8) || 'N/A'}</span>
                     </div>
                   </td>
-                  <td>{new Date(s.created_at).toLocaleDateString()}</td>
+                  <td>{s.created_at ? new Date(s.created_at).toLocaleDateString() : 'N/A'}</td>
                   <td>
                     <a href={s.proof_url} target="_blank" rel="noreferrer" className="proof-link" onClick={(e) => e.stopPropagation()}>
                       View {s.proof_type}
