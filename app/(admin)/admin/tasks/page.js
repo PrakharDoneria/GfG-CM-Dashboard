@@ -1,11 +1,14 @@
 'use client';
 import { useState } from 'react';
+import { useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
+import { handleMarkdownShortcut } from '@/lib/markdownUtils';
 import Modal from '@/components/Modal';
 import './admin-tasks.css';
 
 export default function AdminTasksPage() {
+  const bodyRef = useRef(null);
   const [editingId, setEditingId] = useState(null);
   const [notification, setNotification] = useState({ open: false, title: '', message: '', type: 'default' });
   const [confirmModal, setConfirmModal] = useState({ open: false, id: null });
@@ -138,9 +141,11 @@ export default function AdminTasksPage() {
             <div className="form-group">
               <label>Description</label>
               <textarea 
+                ref={bodyRef}
                 value={formData.body}
                 onChange={(e) => setFormData({...formData, body: e.target.value})}
-                placeholder="Describe the task requirements..." 
+                onKeyDown={(e) => handleMarkdownShortcut(e, formData.body, (newVal) => setFormData({...formData, body: newVal}), bodyRef)}
+                placeholder="Describe the task requirements... (Supports Markdown: Ctrl+B, Ctrl+I, Ctrl+U)" 
                 required 
               />
             </div>

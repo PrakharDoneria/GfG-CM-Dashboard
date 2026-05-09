@@ -123,12 +123,12 @@ export default function ReviewTasksPage() {
 
             <div className="review-footer">
               <div className="reward-info">
-                <span>Potential Reward:</span>
+                <span>Potential Reward: </span>
                 <strong>{sub.tasks?.points_value} Points</strong>
               </div>
               
               {activeTab === 'pending' && (
-                <div className="action-buttons">
+                <div className="review-actions">
                   <button 
                     className="btn-reject" 
                     onClick={() => handleAction(sub.id, 'rejected')}
@@ -136,7 +136,7 @@ export default function ReviewTasksPage() {
                     Reject
                   </button>
                   <button 
-                    className="btn-primary" 
+                    className="btn-approve" 
                     onClick={() => handleAction(sub.id, 'approved')}
                   >
                     Approve

@@ -24,11 +24,6 @@ export default function UserDashboard() {
     const submittedIds = new Set(subs.map(s => s.task_id));
     const pendingCount = tasks.filter(t => !submittedIds.has(t.id)).length;
 
-    const { count: cmCount } = await supabase
-      .from('profiles')
-      .select('*', { count: 'exact', head: true })
-      .eq('role', 'cm');
-
     // Fetch announcements
     const { data: ann } = await supabase
       .from('announcements')
@@ -42,7 +37,6 @@ export default function UserDashboard() {
         pendingTasks: pendingCount,
         totalSubmissions: subs.length,
         pointsEarned: profile?.points || 0,
-        totalMantris: cmCount || 0,
         progress: tasks.length > 0 ? Math.round((subs.length / tasks.length) * 100) : 0,
         totalTasks: tasks.length
       },
@@ -57,7 +51,6 @@ export default function UserDashboard() {
     pendingTasks: 0,
     totalSubmissions: 0,
     pointsEarned: 0,
-    totalMantris: 0,
     progress: 0,
     totalTasks: 0
   };
@@ -121,17 +114,6 @@ export default function UserDashboard() {
       </div>
       
       <div className="dashboard-stats-row">
-        <div className="overview-stat-card">
-          <div className="stat-icon-wrapper">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-          </div>
-          <div className="stat-content">
-            <span className="label">Total Mantris</span>
-            <span className="value">{(stats.totalMantris || 0).toLocaleString()}</span>
-            <span className="subtext">Across all campuses</span>
-          </div>
-        </div>
-        
         <div className="overview-stat-card">
           <div className="stat-icon-wrapper" style={{background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b'}}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>

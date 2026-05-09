@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS submissions (
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   summary TEXT,
   proof_url TEXT,
-  proof_type TEXT CHECK (proof_type IN ('LinkedIn', 'Instagram', 'Google Doc', 'Other')),
+  proof_type TEXT CHECK (proof_type IN ('LinkedIn', 'Instagram', 'Twitter/X', 'Google Doc', 'Other')),
   status TEXT CHECK (status IN ('pending', 'approved', 'rejected')) DEFAULT 'pending',
   feedback TEXT DEFAULT NULL,
   points_awarded INTEGER DEFAULT 0,

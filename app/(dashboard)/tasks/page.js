@@ -1,11 +1,13 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
+import { handleMarkdownShortcut, parseMarkdown } from '@/lib/markdownUtils';
 import Modal from '@/components/Modal';
 import './tasks.css';
 
 export default function TasksPage() {
+  const summaryRef = useRef(null);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [notification, setNotification] = useState({ open: false, title: '', message: '', type: 'default' });
   
@@ -190,12 +192,29 @@ export default function TasksPage() {
               </select>
             </div>
             
+            {selectedTask && (
+              <div className="selected-task-details animate-fade-in">
+                <div className="details-header">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  Task Description
+                </div>
+                <div 
+                  className="details-body markdown-body"
+                  dangerouslySetInnerHTML={{ 
+                    __html: parseMarkdown(pendingTasks.find(t => t.id === selectedTask)?.body || 'No description provided for this task.') 
+                  }}
+                />
+              </div>
+            )}
+            
             <div className="form-group">
               <label>Work Summary <span>*</span></label>
               <textarea 
-                placeholder="Describe the work you've completed..." 
+                ref={summaryRef}
+                placeholder="Describe the work you've completed... (Supports Markdown: Ctrl+B, Ctrl+I, Ctrl+U)" 
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
+                onKeyDown={(e) => handleMarkdownShortcut(e, summary, setSummary, summaryRef)}
                 required
               />
             </div>
@@ -204,11 +223,11 @@ export default function TasksPage() {
               <div className="form-group" style={{flex: 1}}>
                 <label>Proof Type <span>*</span></label>
                 <select value={proofType} onChange={(e) => setProofType(e.target.value)}>
-                  <option>LinkedIn</option>
-                  <option>Instagram</option>
-                  <option>Twitter/X</option>
-                  <option>Google Doc</option>
-                  <option>Other Link</option>
+                  <option value="LinkedIn">LinkedIn</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="Twitter/X">Twitter/X</option>
+                  <option value="Google Doc">Google Doc</option>
+                  <option value="Other">Other Link</option>
                 </select>
               </div>
               <div className="form-group" style={{flex: 2}}>

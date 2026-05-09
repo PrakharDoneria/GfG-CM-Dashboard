@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [rememberMe, setRememberMe] = useState(true);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -18,7 +19,12 @@ export default function LoginPage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         const isAdmin = session.user.email.endsWith('@geeksforgeeks.org');
-        router.push(isAdmin ? '/admin/dashboard' : '/dashboard');
+        const role = isAdmin ? 'admin' : 'cm';
+        localStorage.setItem('user_role', role);
+        router.replace(isAdmin ? '/admin/dashboard' : '/dashboard');
+      } else {
+        localStorage.removeItem('user_role');
+        setCheckingAuth(false);
       }
     };
     checkSession();
@@ -38,10 +44,12 @@ export default function LoginPage() {
       if (authError) throw authError;
 
       const isAdmin = email.endsWith('@geeksforgeeks.org');
+      const role = isAdmin ? 'admin' : 'cm';
+      localStorage.setItem('user_role', role);
       
       await supabase
         .from('profiles')
-        .update({ role: isAdmin ? 'admin' : 'cm' })
+        .update({ role })
         .eq('id', data.user.id);
 
       router.push(isAdmin ? '/admin/dashboard' : '/dashboard');
@@ -51,6 +59,15 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  if (checkingAuth) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Verifying authentication...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="login-container">

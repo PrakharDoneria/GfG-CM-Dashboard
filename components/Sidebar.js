@@ -56,6 +56,7 @@ export default function Sidebar({ role = 'cm' }) {
   };
 
   const handleLogout = async () => {
+    localStorage.removeItem('user_role');
     await supabase.auth.signOut();
     router.push('/login');
   };

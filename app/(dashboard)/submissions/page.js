@@ -2,9 +2,13 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
+import { parseMarkdown } from '@/lib/markdownUtils';
+import Modal from '@/components/Modal';
 import './submissions.css';
 
 export default function SubmissionsPage() {
+  const [viewingSub, setViewingSub] = useState(null);
+  
   const fetchSubmissionsData = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -14,6 +18,7 @@ export default function SubmissionsPage() {
         *,
         tasks (
           title,
+          body,
           points_value
         )
       `)
@@ -92,7 +97,7 @@ export default function SubmissionsPage() {
             </thead>
             <tbody>
               {submissions.length > 0 ? submissions.map(s => (
-                <tr key={s.id}>
+                <tr key={s.id} onClick={() => setViewingSub(s)} style={{cursor: 'pointer'}}>
                   <td>
                     <div className="task-cell">
                       <strong>{s.tasks?.title}</strong>
@@ -101,7 +106,7 @@ export default function SubmissionsPage() {
                   </td>
                   <td>{new Date(s.created_at).toLocaleDateString()}</td>
                   <td>
-                    <a href={s.proof_url} target="_blank" rel="noreferrer" className="proof-link">
+                    <a href={s.proof_url} target="_blank" rel="noreferrer" className="proof-link" onClick={(e) => e.stopPropagation()}>
                       View {s.proof_type}
                     </a>
                   </td>
@@ -122,6 +127,38 @@ export default function SubmissionsPage() {
           </table>
         </div>
       </div>
+
+      <Modal 
+        isOpen={!!viewingSub} 
+        onClose={() => setViewingSub(null)} 
+        title="Submission Details"
+      >
+        {viewingSub && (
+          <div className="submission-details-modal">
+            <div className="detail-section">
+              <label>Task Title</label>
+              <h3>{viewingSub.tasks?.title}</h3>
+            </div>
+            <div className="detail-section">
+              <label>Task Description</label>
+              <div 
+                className="detail-body-box markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(viewingSub.tasks?.body) }}
+              />
+            </div>
+            <div className="detail-section">
+              <label>Your Work Summary</label>
+              <div 
+                className="detail-body-box alt markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(viewingSub.summary) }}
+              />
+            </div>
+            <div style={{marginTop: '24px', display: 'flex', justifyContent: 'center'}}>
+              <button className="btn-primary" onClick={() => setViewingSub(null)}>Close Details</button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
