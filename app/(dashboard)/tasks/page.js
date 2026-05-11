@@ -2,8 +2,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
+import { invalidateCache } from '@/lib/cacheUtils';
 import { handleMarkdownShortcut, parseMarkdown } from '@/lib/markdownUtils';
 import Modal from '@/components/Modal';
+import CustomSelect from '@/components/CustomSelect';
 import './tasks.css';
 
 export default function TasksPage() {
@@ -91,6 +93,11 @@ export default function TasksPage() {
       const freshData = await fetchTasksData();
       setData(freshData);
       localStorage.setItem('user_tasks_cache', JSON.stringify(freshData));
+      
+      // Invalidate related caches
+      invalidateCache('dashboard_cache');
+      invalidateCache('submissions_cache');
+      invalidateCache('admin_review_cache');
     }
   };
 
@@ -202,12 +209,16 @@ export default function TasksPage() {
           <form onSubmit={handleSubmit} className="submit-form">
             <div className="form-group">
               <label>Select Task <span>*</span></label>
-              <select value={selectedTask} onChange={(e) => setSelectedTask(e.target.value)} required>
-                <option value="">Choose from your pending tasks...</option>
-                {pendingTasks.map(t => (
-                  <option key={t.id} value={t.id}>{t.title} ({t.points_value} pts)</option>
-                ))}
-              </select>
+              <CustomSelect 
+                value={selectedTask} 
+                onChange={(e) => setSelectedTask(e.target.value)} 
+                options={pendingTasks.map(t => ({
+                  value: t.id,
+                  label: `${t.title} (${t.points_value} pts)`
+                }))}
+                placeholder="Choose from your pending tasks..."
+                required
+              />
             </div>
             
             {selectedTask && (
@@ -240,13 +251,17 @@ export default function TasksPage() {
             <div className="form-row" style={{display: 'flex', gap: '20px'}}>
               <div className="form-group" style={{flex: 1}}>
                 <label>Proof Type <span>*</span></label>
-                <select value={proofType} onChange={(e) => setProofType(e.target.value)}>
-                  <option value="LinkedIn">LinkedIn</option>
-                  <option value="Instagram">Instagram</option>
-                  <option value="Twitter/X">Twitter/X</option>
-                  <option value="Google Doc">Google Doc</option>
-                  <option value="Other">Other Link</option>
-                </select>
+                <CustomSelect 
+                  value={proofType} 
+                  onChange={(e) => setProofType(e.target.value)}
+                  options={[
+                    { value: 'LinkedIn', label: 'LinkedIn' },
+                    { value: 'Instagram', label: 'Instagram' },
+                    { value: 'Twitter/X', label: 'Twitter/X' },
+                    { value: 'Google Doc', label: 'Google Doc' },
+                    { value: 'Other', label: 'Other Link' }
+                  ]}
+                />
               </div>
               <div className="form-group" style={{flex: 2}}>
                 <label>Proof Link <span>*</span></label>

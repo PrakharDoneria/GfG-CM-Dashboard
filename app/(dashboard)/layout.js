@@ -40,15 +40,26 @@ export default function DashboardLayout({ children }) {
       <Sidebar role={profile?.role} />
       <main className="dashboard-main">
         <header className="dashboard-header">
-          <div className="header-user">
-            <span className="welcome">Welcome back,</span>
-            <span className="user-name">{profile?.full_name || user?.email}</span>
+          <div className="header-left">
+            <span className="header-breadcrumb">GfG Campus Mantri</span>
+            <span className="header-page-name">Dashboard</span>
+          </div>
+          <div className="header-right">
             {profile?.role === 'cm' && (
               <div className="user-points">
                 <span>🏆</span>
-                <span>{profile?.points || 0} Points</span>
+                <span>{profile?.points || 0} pts</span>
               </div>
             )}
+            <div className="header-user">
+              <div className="header-avatar">
+                {(profile?.full_name || user?.email || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase()}
+              </div>
+              <div>
+                <div className="welcome">Welcome back</div>
+                <div className="user-name">{profile?.full_name || user?.email?.split('@')[0] || 'Member'}</div>
+              </div>
+            </div>
           </div>
         </header>
         <div className="dashboard-content">

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
+import { invalidateCache } from '@/lib/cacheUtils';
 import './review.css';
 
 import Modal from '@/components/Modal';
@@ -12,7 +13,8 @@ export default function ReviewTasksPage() {
   const [reviewData, setReviewData] = useState({
     id: null,
     status: '',
-    feedback: ''
+    feedback: '',
+    sub: null
   });
 
   const fetchSubmissionsData = async () => {
@@ -32,48 +34,70 @@ export default function ReviewTasksPage() {
   };
 
   const { data: submissionsData, loading, setData } = useCachedData(`admin_review_cache_${activeTab}`, fetchSubmissionsData);
+  
+  const fetchPendingCount = async () => {
+    const { count } = await supabase
+      .from('submissions')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending');
+    return count || 0;
+  };
+  const { data: pendingCountData } = useCachedData('admin_pending_count', fetchPendingCount, 30000);
+
   const submissions = submissionsData || [];
+  const pendingCount = pendingCountData ?? (activeTab === 'pending' ? submissions.length : 0);
 
   const showNotification = (title, message, type = 'default') => {
     setNotification({ open: true, title, message, type });
   };
 
-  const handleAction = async (id, status) => {
-    setReviewData({ id, status, feedback: '' });
+  const handleAction = (sub, status) => {
+    setReviewData({ id: sub.id, status, feedback: '', sub });
   };
 
   const submitReview = async () => {
-    const { id, status, feedback } = reviewData;
+    const { id, status, feedback, sub } = reviewData;
+    if (!id || !sub) return;
     
-    // If approved, update user points
-    if (status === 'approved') {
-      const sub = submissions.find(s => s.id === id);
-      const points = sub.tasks.points_value;
-      
-      // Update CM points
-      await supabase.rpc('increment_points', { 
-        user_id: sub.user_id, 
-        points_to_add: points 
-      });
-    }
+    try {
+      // If approved, update user points
+      if (status === 'approved') {
+        const points = sub.tasks?.points_value || 0;
+        
+        // Update CM points via RPC
+        const { error: rpcError } = await supabase.rpc('increment_points', { 
+          user_id: sub.user_id, 
+          points_to_add: points 
+        });
+        
+        if (rpcError) throw rpcError;
+      }
 
-    const { error } = await supabase
-      .from('submissions')
-      .update({ 
-        status, 
-        feedback: feedback || (status === 'approved' ? 'Accepted, Good Job!' : 'Rejected'),
-        points_awarded: status === 'approved' ? submissions.find(s => s.id === id).tasks.points_value : 0
-      })
-      .eq('id', id);
+      const { error } = await supabase
+        .from('submissions')
+        .update({ 
+          status, 
+          feedback: feedback.trim() || (status === 'approved' ? 'Accepted, Good Job!' : 'Rejected'),
+          points_awarded: status === 'approved' ? (sub.tasks?.points_value || 0) : 0
+        })
+        .eq('id', id);
 
-    if (!error) {
+      if (error) throw error;
+
       showNotification('Success', `Task ${status} successfully!`, 'success');
-      setReviewData({ id: null, status: '', feedback: '' });
+      setReviewData({ id: null, status: '', feedback: '', sub: null });
       const freshData = await fetchSubmissionsData();
       setData(freshData);
       localStorage.setItem(`admin_review_cache_${activeTab}`, JSON.stringify(freshData));
-    } else {
-      showNotification('Error', error.message, 'error');
+      
+      // Invalidate the specific count cache too
+      invalidateCache('admin_pending_count');
+      
+      // Invalidate dashboard caches so they reflect the new counts
+      invalidateCache('dashboard_cache');
+      invalidateCache('submissions_cache');
+    } catch (err) {
+      showNotification('Error', err.message || 'Something went wrong', 'error');
     }
   };
 
@@ -88,7 +112,7 @@ export default function ReviewTasksPage() {
           className={activeTab === 'pending' ? 'active' : ''} 
           onClick={() => setActiveTab('pending')}
         >
-          Pending Review ({submissions.filter(s => s.status === 'pending').length})
+          Pending Review ({pendingCount})
         </button>
         <button 
           className={activeTab === 'approved' ? 'active' : ''} 
@@ -131,36 +155,19 @@ export default function ReviewTasksPage() {
                 <div className="review-actions">
                   <button 
                     className="btn-reject" 
-                    onClick={() => handleAction(sub.id, 'rejected')}
+                    onClick={() => handleAction(sub, 'rejected')}
                   >
                     Reject
                   </button>
                   <button 
                     className="btn-approve" 
-                    onClick={() => handleAction(sub.id, 'approved')}
+                    onClick={() => handleAction(sub, 'approved')}
                   >
                     Approve
                   </button>
                 </div>
               )}
             </div>
-
-            {reviewData.id === sub.id && (
-              <div className="review-modal-overlay">
-                <div className="review-modal card">
-                  <h3>Finalize {reviewData.status}</h3>
-                  <textarea 
-                    placeholder="Add feedback (optional)..."
-                    value={reviewData.feedback}
-                    onChange={(e) => setReviewData({...reviewData, feedback: e.target.value})}
-                  />
-                  <div className="modal-actions">
-                    <button className="btn-text" onClick={() => setReviewData({id:null})}>Cancel</button>
-                    <button className="btn-primary" onClick={submitReview}>Confirm {reviewData.status}</button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )) : (
           <div className="empty-state card">
@@ -168,6 +175,34 @@ export default function ReviewTasksPage() {
           </div>
         )}
       </div>
+
+      {/* Review Confirmation Modal */}
+      {reviewData.id && (
+        <div className="review-modal-overlay">
+          <div className="review-modal card animate-scale-in">
+            <h3>Finalize {reviewData.status}</h3>
+            <p className="subtext" style={{marginBottom: '16px'}}>
+              Task: <strong>{reviewData.sub?.tasks?.title}</strong>
+            </p>
+            <textarea 
+              placeholder="Add feedback (optional)..."
+              value={reviewData.feedback}
+              onChange={(e) => setReviewData({...reviewData, feedback: e.target.value})}
+              autoFocus
+            />
+            <div className="modal-actions">
+              <button className="btn-text" onClick={() => setReviewData({id:null, sub:null})}>Cancel</button>
+              <button 
+                className={reviewData.status === 'approved' ? 'btn-approve' : 'btn-reject'} 
+                onClick={submitReview}
+                style={{minWidth: '160px', borderRadius: '12px', padding: '12px 24px', fontWeight: 700}}
+              >
+                Confirm {reviewData.status?.toUpperCase()}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Notification Modal */}
       <Modal isOpen={notification.open} onClose={() => setNotification({open:false})} title={notification.title} type={notification.type}>

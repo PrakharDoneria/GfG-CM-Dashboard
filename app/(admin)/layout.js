@@ -41,10 +41,19 @@ export default function AdminLayout({ children }) {
       <Sidebar role="admin" />
       <main className="dashboard-main">
         <header className="dashboard-header">
-          <div className="header-user">
-            <span className="badge badge-high" style={{marginRight: '12px'}}>ADMIN PORTAL</span>
-            <span className="welcome">Logged in as</span>
-            <span className="user-name">System Administrator</span>
+          <div className="header-left">
+            <span className="header-breadcrumb">GeeksforGeeks</span>
+            <span className="header-page-name">Admin Portal</span>
+          </div>
+          <div className="header-right">
+            <span className="badge badge-high" style={{padding: '6px 14px', fontSize: '0.72rem'}}>ADMIN ACCESS</span>
+            <div className="header-user" style={{cursor: 'default'}}>
+              <div className="header-avatar" style={{background: 'linear-gradient(135deg, #ef4444, #dc2626)'}}>AD</div>
+              <div>
+                <div className="welcome">Logged in as</div>
+                <div className="user-name">System Administrator</div>
+              </div>
+            </div>
           </div>
         </header>
         <div className="dashboard-content">

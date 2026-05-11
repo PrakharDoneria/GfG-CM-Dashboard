@@ -62,18 +62,18 @@ export default function UserDashboard() {
   return (
     <div className="overview-container">
       {latestAnnouncement && (
-        <div className="important-notification animate-fade-in">
-          <div className="notif-icon-side">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <div className="announcement-toast animate-fade-in">
+          <div className="toast-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
           </div>
-          <div className="notif-content">
-            <h3>{latestAnnouncement.title}</h3>
-            <p>{latestAnnouncement.body}</p>
-            <div className="notif-footer">
-              <p>Posted on {new Date(latestAnnouncement.created_at).toLocaleDateString()}</p>
+          <div className="toast-body">
+            <div className="toast-title">
+              {latestAnnouncement.title}
+              <span className="toast-new-badge">New</span>
             </div>
+            <p className="toast-text">{latestAnnouncement.body}</p>
+            <span className="toast-date">Posted on {new Date(latestAnnouncement.created_at).toLocaleDateString()}</span>
           </div>
-          <div className="priority-badge">New</div>
         </div>
       )}
 
@@ -113,7 +113,7 @@ export default function UserDashboard() {
         </div>
       </div>
       
-      <div className="dashboard-stats-row">
+      <div className="dashboard-stats-row layout-2-plus-1">
         <div className="overview-stat-card">
           <div className="stat-icon-wrapper" style={{background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b'}}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>

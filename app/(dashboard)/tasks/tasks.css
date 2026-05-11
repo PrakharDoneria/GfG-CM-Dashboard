@@ -1,8 +1,8 @@
-/* ===== TASKS PAGE REDESIGN (SCREENSHOT 4) ===== */
+/* ===== TASKS PAGE — GfG Theme ===== */
 .tasks-container {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 28px;
   animation: slideInUp 0.4s ease-out;
 }
 
@@ -16,45 +16,49 @@
 .task-stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
   display: flex;
   align-items: center;
   gap: 16px;
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
+  transition: all var(--transition-base);
 }
 
-.task-stat-card::after {
+.task-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.task-stat-card::before {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: transparent;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 0 0 0 0;
 }
 
-.task-stat-card.blue::after { background: #3b82f6; }
-.task-stat-card.purple::after { background: #8b5cf6; }
-.task-stat-card.orange::after { background: #f59e0b; }
-.task-stat-card.green::after { background: #10b981; }
+.task-stat-card.blue::before  { background: #3b82f6; }
+.task-stat-card.purple::before { background: #8b5cf6; }
+.task-stat-card.orange::before { background: #f59e0b; }
+.task-stat-card.green::before  { background: var(--primary); }
 
 .task-stat-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
+  width: 50px; height: 50px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.task-stat-card.blue .task-stat-icon { background: #eff6ff; color: #3b82f6; }
-.task-stat-card.purple .task-stat-icon { background: #f5f3ff; color: #8b5cf6; }
-.task-stat-card.orange .task-stat-icon { background: #fffbeb; color: #f59e0b; }
-.task-stat-card.green .task-stat-icon { background: #f0fdf4; color: #10b981; }
+.task-stat-card.blue .task-stat-icon   { background: rgba(59,130,246,0.1);   color: #3b82f6; }
+.task-stat-card.purple .task-stat-icon { background: rgba(139,92,246,0.1);   color: #8b5cf6; }
+.task-stat-card.orange .task-stat-icon { background: rgba(245,158,11,0.1);   color: #f59e0b; }
+.task-stat-card.green .task-stat-icon  { background: rgba(47,141,70,0.1);    color: var(--primary); }
 
 .task-stat-info .label {
   display: block;
@@ -84,9 +88,15 @@
 .task-completion-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
   box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.task-completion-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow);
 }
 
 .completion-header {
@@ -140,17 +150,28 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
-  overflow: hidden;
   box-shadow: var(--shadow-md);
 }
 
 .submit-card-header {
-  background: #064e3b; /* Dark Green */
+  background: #0d1117;
   color: white;
   padding: 24px 32px;
   display: flex;
   align-items: center;
   gap: 20px;
+  border-bottom: 1px solid rgba(47,141,70,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-card-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: -60px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(47,141,70,0.2) 0%, transparent 65%);
+  pointer-events: none;
 }
 
 .plus-icon-wrapper {

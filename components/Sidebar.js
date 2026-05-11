@@ -43,9 +43,17 @@ export default function Sidebar({ role = 'cm' }) {
     };
 
     fetchBadgeCount();
+
+    // Listen for custom invalidation events to update badge counts instantly
+    const handleInvalidation = () => fetchBadgeCount();
+    window.addEventListener('cache-invalidated', handleInvalidation);
+
     // Refresh every 30 seconds
     const interval = setInterval(fetchBadgeCount, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('cache-invalidated', handleInvalidation);
+    };
   }, [role]);
 
   const toggleTheme = () => {
@@ -102,7 +110,10 @@ export default function Sidebar({ role = 'cm' }) {
       <div className="sidebar">
         <div className="sidebar-logo">
           <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="GFG" />
-          <span>Campus Mantri</span>
+          <div className="sidebar-logo-text">
+            <span className="sidebar-logo-title">Campus Mantri</span>
+            <span className="sidebar-logo-sub">GeeksforGeeks</span>
+          </div>
         </div>
         
         <nav className="sidebar-nav">

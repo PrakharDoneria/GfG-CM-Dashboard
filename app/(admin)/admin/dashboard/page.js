@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
 import { syncAllProfiles } from '@/lib/gfgSync';
-import '@/app/(dashboard)/dashboard/overview.css';
+import { invalidateCache } from '@/lib/cacheUtils';
+import '@/app/(admin)/admin/dashboard/admin-dashboard.css';
 
 export default function AdminDashboard() {
   const fetchAdminStats = async () => {
@@ -52,43 +53,29 @@ export default function AdminDashboard() {
   if (loading && !statsData) return <div className="loading-screen">Loading Admin Overview...</div>;
 
   return (
-    <div className="overview-container">
-      <div className="welcome-banner animate-fade-in" style={{background: 'linear-gradient(135deg, #064e3b 0%, #0f172a 100%)'}}>
-        <div className="user-profile-info">
-          <div className="user-avatar-large" style={{background: 'rgba(16, 185, 129, 0.2)', color: '#10b981'}}>
-            AD
+    <div className="admin-dashboard-container">
+      <div className="admin-hero-banner animate-fade-in">
+        <div className="admin-hero-left">
+          <div className="admin-role-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            Administrator
           </div>
-          <div className="welcome-text">
-            <h1>Admin Control Center 🛠️</h1>
-            <div className="college-info">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              <span>GeeksforGeeks Administrative Access</span>
-            </div>
-            <div className="user-meta-pills">
-              <span className="meta-pill active">System Admin</span>
-              <span className="meta-pill">Live Mode</span>
-            </div>
-          </div>
+          <h1 className="admin-hero-title">Admin Control Center</h1>
+          <p className="admin-hero-subtitle">GeeksforGeeks Campus Mantri Platform</p>
         </div>
-        <div className="banner-stats">
-          <div className="banner-stat-item">
-            <span className="value">{(stats.totalCMs || 0).toLocaleString()}</span>
-            <span className="label">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{marginRight: '4px'}}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
-              Total CMs
-            </span>
+        <div className="admin-hero-right">
+          <div className="admin-stat-pill">
+            <span className="admin-stat-pill-value">{(stats.totalCMs || 0).toLocaleString()}</span>
+            <span className="admin-stat-pill-label">Total CMs</span>
           </div>
-          <div className="banner-stat-item">
-            <span className="value">{(stats.totalPointsGiven || 0).toLocaleString()}</span>
-            <span className="label">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{marginRight: '4px'}}><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-              Points Awarded
-            </span>
+          <div className="admin-stat-pill">
+            <span className="admin-stat-pill-value">{(stats.totalPointsGiven || 0).toLocaleString()}</span>
+            <span className="admin-stat-pill-label">Points Given</span>
           </div>
         </div>
       </div>
 
-      <div className="dashboard-stats-row">
+      <div className="dashboard-stats-row layout-2-col">
         <div className="overview-stat-card">
           <div className="stat-icon-wrapper">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -153,14 +140,42 @@ export default function AdminDashboard() {
             <button 
               onClick={async (e) => {
                 const btn = e.currentTarget;
-                const originalText = btn.innerHTML;
                 btn.disabled = true;
-                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style="margin-right: 8px; animation: rotate-slow 1s linear infinite"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg> Syncing...';
+                btn.style.position = 'relative';
+                const originalContent = btn.innerHTML;
+                
+                // Show progressive UI
+                btn.innerHTML = `
+                  <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+                    <div class="loading-spinner-small" style="margin-right: 10px;"></div>
+                    <span>Synchronizing CM Data...</span>
+                  </div>
+                  <div style="position: absolute; bottom: 0; left: 0; height: 3px; background: #4ade80; width: 0%; transition: width 2s ease;" id="sync-progress"></div>
+                `;
+                
+                setTimeout(() => {
+                  const prog = document.getElementById('sync-progress');
+                  if (prog) prog.style.width = '70%';
+                }, 100);
+
                 await syncAllProfiles();
-                window.location.reload();
+                
+                if (document.getElementById('sync-progress')) {
+                  document.getElementById('sync-progress').style.width = '100%';
+                }
+                
+                btn.innerHTML = '✨ Sync Complete!';
+                btn.style.background = 'var(--primary)';
+                btn.style.color = 'white';
+                
+                invalidateCache(); // Clear all caches
+                
+                setTimeout(() => {
+                  window.location.reload();
+                }, 800);
               }}
               className="btn-primary-outline" 
-              style={{flex: '1 1 100%', marginTop: '8px'}}
+              style={{flex: '1 1 100%', marginTop: '8px', minHeight: '48px'}}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight: '8px'}}><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
               Sync All GfG Profiles

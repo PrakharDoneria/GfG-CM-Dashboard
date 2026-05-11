@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
+import { invalidateCache } from '@/lib/cacheUtils';
 import { handleMarkdownShortcut } from '@/lib/markdownUtils';
 import Modal from '@/components/Modal';
 import './admin-tasks.css';
@@ -77,6 +78,10 @@ export default function AdminTasksPage() {
     const freshData = await fetchTasksData();
     setData(freshData);
     localStorage.setItem('admin_tasks_cache', JSON.stringify(freshData));
+    
+    // Invalidate user caches so they see the new/updated task
+    invalidateCache('user_tasks_cache');
+    invalidateCache('dashboard_cache');
   };
 
   const handleEdit = (task) => {
@@ -105,6 +110,11 @@ export default function AdminTasksPage() {
     const freshData = await fetchTasksData();
     setData(freshData);
     localStorage.setItem('admin_tasks_cache', JSON.stringify(freshData));
+    
+    // Invalidate user caches
+    invalidateCache('user_tasks_cache');
+    invalidateCache('dashboard_cache');
+    
     showNotification('Deleted', 'Task has been removed.', 'success');
   };
 
