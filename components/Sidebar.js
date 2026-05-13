@@ -147,6 +147,18 @@ export default function Sidebar({ role = 'cm' }) {
             </span>
             <span className="nav-text">Sign Out</span>
           </button>
+          
+          <div className="sidebar-support">
+            <div className="support-divider"></div>
+            <div className="support-item">
+              <span className="support-label">Program Support</span>
+              <a href="mailto:campus@geeksforgeeks.org" className="support-link">campus@geeksforgeeks.org</a>
+            </div>
+            <div className="support-item">
+              <span className="support-label">App Support</span>
+              <a href="mailto:prakhar.doneria@geeksforgeeks.org" className="support-link">prakhar.doneria@geeksforgeeks.org</a>
+            </div>
+          </div>
         </div>
       </div>
 

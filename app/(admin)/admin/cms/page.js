@@ -55,20 +55,26 @@ export default function ManageCMPage() {
   const handleAddCM = async (e) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: newCm.email.trim(),
-        password: newCm.password.trim(),
-        options: {
-          data: {
+      // Use the admin API to bypass email verification
+      const response = await fetch('/api/admin/bulk-import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          users: [{
+            email: newCm.email.trim(),
+            password: newCm.password.trim(),
             full_name: newCm.full_name,
             college_name: newCm.college_name
-          }
-        }
+          }]
+        })
       });
       
-      if (error) throw error;
+      const result = await response.json();
       
-      showNotification('Success', 'CM created successfully in Auth and Database!', 'success');
+      if (result.errors?.length > 0) throw new Error(result.errors[0].message);
+      if (result.error) throw new Error(result.error);
+      
+      showNotification('Success', 'CM created successfully (Email auto-confirmed)!', 'success');
       setNewCm({ email: '', full_name: '', college_name: '', password: '' });
       const freshData = await fetchCMs();
       setData(freshData);
@@ -76,6 +82,62 @@ export default function ManageCMPage() {
     } catch (err) {
       showNotification('Error', err.message, 'error');
     }
+  };
+
+  const handleBulkImport = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target.result;
+        const lines = text.split('\n');
+        const headers = lines[0].split(',');
+        
+        const users = lines.slice(1).filter(l => l.trim()).map(line => {
+          const values = line.split(',');
+          return {
+            full_name: values[0]?.trim(),
+            email: values[1]?.trim(),
+            college_name: values[2]?.trim(),
+            // password is optional in CSV, API will provide default
+          };
+        });
+
+        if (users.length === 0) throw new Error('CSV is empty or invalid');
+
+        showNotification('Importing', `Processing ${users.length} users. This may take a while...`, 'default');
+
+        const response = await fetch('/api/admin/bulk-import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ users })
+        });
+
+        const result = await response.json();
+        
+        if (result.error) throw new Error(result.error);
+
+        const successCount = result.success?.length || 0;
+        const errorCount = result.errors?.length || 0;
+
+        showNotification(
+          'Import Complete', 
+          `Successfully imported ${successCount} users. ${errorCount} errors.`,
+          errorCount > 0 ? 'error' : 'success'
+        );
+
+        if (successCount > 0) {
+          const freshData = await fetchCMs();
+          setData(freshData);
+          localStorage.setItem('admin_cms_cache', JSON.stringify(freshData));
+        }
+      } catch (err) {
+        showNotification('Import Error', err.message, 'error');
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handleViewDetails = (cm) => {
@@ -264,7 +326,7 @@ export default function ManageCMPage() {
             </div>
             <p className="import-help">Select a CSV file to import multiple Campus Mantris at once.</p>
             <div className="import-actions">
-              <input type="file" accept=".csv" id="csv-upload" hidden />
+              <input type="file" accept=".csv" id="csv-upload" onChange={handleBulkImport} hidden />
               <label htmlFor="csv-upload" className="btn-primary-outline">
                 Upload CSV
               </label>

@@ -286,6 +286,45 @@ img {
   box-shadow: var(--shadow-green);
 }
 
+.btn-primary-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+.btn-primary-outline:hover {
+  background: var(--primary-light);
+}
+
+.btn-secondary-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border: 1.5px solid var(--border);
+  color: var(--text-main);
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  font-size: 0.9rem;
+}
+
+.btn-secondary-outline:hover {
+  background: var(--background);
+  border-color: var(--text-muted);
+}
+
 .btn-danger {
   background: rgba(239, 68, 68, 0.1);
   border: 1.5px solid rgba(239, 68, 68, 0.3);

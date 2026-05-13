@@ -418,3 +418,53 @@
   .mobile-nav-label { display: none; }
   .mobile-nav-icon { width: 26px; height: 26px; }
 }
+
+/* ── Sidebar Support ── */
+.sidebar-support {
+  margin-top: 12px;
+  padding: 0 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.support-divider {
+  height: 1px;
+  background: #21293d;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.support-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.support-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #4a5568;
+  letter-spacing: 0.05em;
+}
+
+.support-link {
+  font-size: 0.72rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.support-link:hover {
+  color: #6ee7a0;
+  text-decoration: underline;
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .sidebar-support { display: none; }
+}
