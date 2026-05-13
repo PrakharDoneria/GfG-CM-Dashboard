@@ -85,7 +85,7 @@
 
 /* ── Welcome Banner ── */
 .welcome-banner {
-  background: #0d1117;
+  background: var(--surface-welcome, #0d1117);
   border-radius: var(--radius-xl);
   padding: 36px 40px;
   display: flex;
@@ -95,7 +95,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 16px 40px rgba(0,0,0,0.25);
-  border: 1px solid #21293d;
+  border: 1px solid var(--border-welcome, #21293d);
   transition: transform 0.4s var(--transition-spring);
 }
 
@@ -149,7 +149,7 @@
   font-size: 1.625rem;
   font-family: var(--font-display);
   margin-bottom: 10px;
-  color: #e6edf3;
+  color: var(--banner-text, #e6edf3);
   font-weight: 800;
 }
 
@@ -158,7 +158,7 @@
   align-items: center;
   gap: 8px;
   font-size: 0.875rem;
-  color: #8a9bb0;
+  color: var(--banner-muted, #8a9bb0);
   margin-bottom: 14px;
 }
 
@@ -177,7 +177,7 @@
   border-radius: var(--radius-full);
   font-size: 0.72rem;
   font-weight: 600;
-  color: #8a9bb0;
+  color: var(--banner-muted, #8a9bb0);
   letter-spacing: 0.02em;
 }
 
@@ -226,12 +226,29 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   font-weight: 700;
-  color: #6e7f96;
+  color: var(--banner-muted, #6e7f96);
   letter-spacing: 0.08em;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
+}
+
+/* Light mode overrides for welcome banner */
+:root {
+  --surface-welcome: #0d1117;
+  --border-welcome: #21293d;
+  --banner-text: #e6edf3;
+  --banner-muted: #8a9bb0;
+}
+
+/* In light mode, give the banner a slightly lighter dark shade so it still looks premium */
+[data-theme='light'],
+:root:not([data-theme='dark']) {
+  --surface-welcome: #1a2233;
+  --border-welcome: #2d3a50;
+  --banner-text: #f0f4f8;
+  --banner-muted: #9baabf;
 }
 
 /* ── Stats Grid ── */

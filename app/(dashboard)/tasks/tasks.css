@@ -28,9 +28,10 @@
 }
 
 .task-stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
   border-color: var(--primary);
+  z-index: 10;
 }
 
 .task-stat-card::before {
@@ -45,6 +46,15 @@
 .task-stat-card.purple::before { background: #8b5cf6; }
 .task-stat-card.orange::before { background: #f59e0b; }
 .task-stat-card.green::before  { background: var(--primary); }
+
+/* Staggered animation */
+.tasks-stats-row .task-stat-card {
+  animation: slideInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.tasks-stats-row .task-stat-card:nth-child(1) { animation-delay: 0.1s; }
+.tasks-stats-row .task-stat-card:nth-child(2) { animation-delay: 0.2s; }
+.tasks-stats-row .task-stat-card:nth-child(3) { animation-delay: 0.3s; }
+.tasks-stats-row .task-stat-card:nth-child(4) { animation-delay: 0.4s; }
 
 .task-stat-icon {
   width: 50px; height: 50px;
@@ -286,12 +296,47 @@
 
 @media (max-width: 768px) {
   .tasks-container { gap: 20px; }
-  .tasks-stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .task-stat-card { padding: 16px; gap: 12px; border-radius: 16px; }
-  .task-stat-icon { width: 44px; height: 44px; border-radius: 10px; }
-  .task-stat-icon svg { width: 20px; height: 20px; }
-  .task-stat-info .value { font-size: 1.25rem; }
-  .task-stat-info .label { font-size: 0.6rem; }
+  .tasks-stats-row { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
+    margin-bottom: 8px;
+  }
+  
+  .task-stat-card { 
+    flex-direction: column;
+    padding: 20px 12px; 
+    gap: 12px; 
+    border-radius: 20px;
+    aspect-ratio: 1 / 1;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .task-stat-icon { 
+    width: 48px; 
+    height: 48px; 
+    border-radius: 14px; 
+    margin-bottom: 4px;
+  }
+  
+  .task-stat-icon svg { width: 22px; height: 22px; }
+  
+  .task-stat-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .task-stat-info .value { 
+    font-size: 1.5rem; 
+    margin-bottom: 2px;
+  }
+  
+  .task-stat-info .label { 
+    font-size: 0.65rem; 
+    letter-spacing: 0.02em;
+  }
+  
   .task-stat-info .subtext { display: none; }
   
   .submit-card-header { padding: 20px; flex-direction: column; text-align: center; gap: 12px; }
@@ -301,7 +346,16 @@
 }
 
 @media (max-width: 480px) {
-  .tasks-stats-row { grid-template-columns: 1fr; }
+  .tasks-stats-row { 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .task-stat-card {
+    padding: 16px 10px;
+  }
+  .task-stat-info .value {
+    font-size: 1.25rem;
+  }
   .completion-header { flex-direction: column; align-items: flex-start; gap: 8px; }
   .submit-header-content h2 { font-size: 1.1rem; }
 }
