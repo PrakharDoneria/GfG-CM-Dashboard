@@ -12,7 +12,7 @@ export default function GfGIntegration({ profile, onSyncSuccess }) {
   const [error, setError] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
 
-  const CUTOFF_DATE = new Date('2026-05-19T00:00:00Z');
+  const CUTOFF_DATE = new Date('2026-05-17T00:00:00Z');
 
   const fetchGfGData = async () => {
     if (!handle) return;
@@ -174,7 +174,7 @@ export default function GfGIntegration({ profile, onSyncSuccess }) {
           </div>
         </div>
         <div className="sync-stats-mini">
-           <span>Only activity after <strong>May 18, 2026</strong> is tracked.</span>
+           <span>Only activity after <strong>May 17, 2028</strong> is tracked.</span>
         </div>
       </div>
     );
@@ -192,7 +192,7 @@ export default function GfGIntegration({ profile, onSyncSuccess }) {
             <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="GfG" />
             <h2>Link GfG Profile</h2>
           </div>
-          <p className="setup-desc">Sync your practice progress & community posts to earn points. Only activity strictly <strong>after May 18, 2026</strong> will be counted.</p>
+          <p className="setup-desc">Sync your practice progress & community posts to earn points. Only activity strictly <strong>after May 17, 2028</strong> will be counted.</p>
           <div className="gfg-input-group">
             <input 
               type="text" 
@@ -312,7 +312,7 @@ export default function GfGIntegration({ profile, onSyncSuccess }) {
               <strong style={{ fontSize: '1.5rem', color: '#10b981' }}>+{totalPoints}</strong>
             </div>
             <small style={{ display: 'block', fontSize: '0.7rem', opacity: '0.8', marginTop: '6px', textAlign: 'center' }}>
-              Based on activity after <strong>May 18, 2026</strong>
+              Based on activity after <strong>May 17, 2028</strong>
             </small>
           </div>
 

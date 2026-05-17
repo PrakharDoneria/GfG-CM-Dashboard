@@ -103,7 +103,7 @@ export default function PointsSchemePage() {
         <div className="rules-content">
           <ul>
             <li>
-              <strong>Active Timeframe:</strong> Only submissions resolved and posts published strictly after <strong>May 18, 2026</strong> are eligible for point syncs.
+              <strong>Active Timeframe:</strong> Only submissions resolved and posts published strictly on and after <strong>May 17, 2026</strong> are eligible for point syncs.
             </li>
             <li>
               <strong>Handle Integrity:</strong> Once a GeeksforGeeks handle is linked to your dashboard profile, it is locked and cannot be changed or transferred.
