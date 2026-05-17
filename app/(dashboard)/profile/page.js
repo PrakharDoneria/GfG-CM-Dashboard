@@ -67,8 +67,12 @@ export default function ProfilePage() {
       
       <div className="profile-card card">
         <div className="profile-header">
-          <div className="profile-avatar-xl">
-            {profile?.full_name?.split(' ').map(n => n[0]).join('') || 'CM'}
+          <div className="profile-avatar-xl" style={{ overflow: 'hidden', padding: 0 }}>
+            {profile?.gfg_profile_img ? (
+              <img src={profile.gfg_profile_img} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+            ) : (
+              profile?.full_name?.split(' ').map(n => n[0]).join('') || 'CM'
+            )}
           </div>
           <div className="profile-main-info">
             <h2>{profile?.full_name}</h2>

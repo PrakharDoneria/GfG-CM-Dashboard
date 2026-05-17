@@ -82,6 +82,9 @@ export default function Sidebar({ role = 'cm' }) {
     { name: 'Announcements', href: '/announcements', icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a3 3 0 0 0-3-3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a3 3 0 0 0 3-3V8Z"></path><path d="M10 12h.01"></path><path d="M13 18l-2-4"></path><path d="M13 6l-2 4"></path></svg>
     ) },
+    { name: 'Points Scheme', href: '/points', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+    ) },
   ];
 
   const adminLinks = [
@@ -99,6 +102,9 @@ export default function Sidebar({ role = 'cm' }) {
     ), badge: true },
     { name: 'Announcements', href: '/admin/announcements', icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a3 3 0 0 0-3-3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a3 3 0 0 0 3-3V8Z"></path><path d="M10 12h.01"></path><path d="M13 18l-2-4"></path><path d="M13 6l-2 4"></path></svg>
+    ) },
+    { name: 'Points Scheme', href: '/points', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
     ) },
   ];
 

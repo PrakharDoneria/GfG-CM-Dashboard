@@ -1,0 +1,316 @@
+.points-scheme-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 8px 32px 8px;
+}
+
+/* Points Hero Banner */
+.points-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(15, 141, 92, 0.1) 0%, rgba(1, 108, 204, 0.05) 100%);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .points-hero {
+  background: linear-gradient(135deg, rgba(15, 141, 92, 0.15) 0%, rgba(1, 108, 204, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.points-hero-left {
+  flex: 1;
+  z-index: 2;
+}
+
+.points-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 141, 92, 0.1);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(15, 141, 92, 0.2);
+}
+
+.points-hero-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.points-hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.points-hero-right {
+  z-index: 2;
+  margin-left: 40px;
+}
+
+.gfg-badge-circle {
+  width: 96px;
+  height: 96px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gfg-badge-circle:hover {
+  transform: rotate(15deg) scale(1.08);
+}
+
+.gfg-badge-circle img {
+  width: 52px;
+  height: 52px;
+}
+
+/* Grids Layout */
+.points-grids {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* Standard Premium Card */
+.points-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.points-card:hover {
+  border-color: rgba(15, 141, 92, 0.3);
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.practice-color {
+  background: rgba(15, 141, 92, 0.1);
+  color: var(--primary);
+}
+
+.community-color {
+  background: rgba(1, 108, 204, 0.1);
+  color: #016ccc;
+}
+
+.rules-color {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.card-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+/* Scheme List */
+.scheme-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scheme-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: background 0.2s ease;
+}
+
+.scheme-item:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='dark'] .scheme-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.difficulty {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.difficulty.basic {
+  background: rgba(156, 163, 175, 0.15);
+  color: #6b7280;
+}
+
+.difficulty.easy {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.difficulty.medium {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.difficulty.hard {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.contribution-type {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.points-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.per-unit {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Formula Box */
+.formula-box {
+  margin-top: 24px;
+  padding: 20px;
+  background: rgba(1, 108, 204, 0.05);
+  border: 1px dashed rgba(1, 108, 204, 0.2);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+[data-theme='dark'] .formula-box {
+  background: rgba(1, 108, 204, 0.1);
+  border-color: rgba(1, 108, 204, 0.3);
+}
+
+.formula-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #016ccc;
+}
+
+.formula-code {
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+/* Rules Card styling */
+.rules-card {
+  border-left: 4px solid #f59e0b !important;
+}
+
+.rules-content ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rules-content li {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.rules-content li strong {
+  color: var(--text-main);
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  .points-grids {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .points-hero {
+    flex-direction: column;
+    padding: 24px;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .points-hero-right {
+    margin-left: 0;
+    align-self: center;
+  }
+  
+  .points-hero-title {
+    font-size: 1.75rem;
+  }
+  
+  .points-card {
+    padding: 20px;
+  }
+  
+  .scheme-item {
+    padding: 12px 14px;
+  }
+}

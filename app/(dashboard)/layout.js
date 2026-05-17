@@ -52,8 +52,12 @@ export default function DashboardLayout({ children }) {
               </div>
             )}
             <div className="header-user">
-              <div className="header-avatar">
-                {(profile?.full_name || user?.email || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase()}
+              <div className="header-avatar" style={{ overflow: 'hidden', padding: 0 }}>
+                {profile?.gfg_profile_img ? (
+                  <img src={profile.gfg_profile_img} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                ) : (
+                  (profile?.full_name || user?.email || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase()
+                )}
               </div>
               <div>
                 <div className="welcome">Welcome back</div>
