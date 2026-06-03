@@ -1,0 +1,3 @@
+name = "gfg-cm-dashboard"
+pages_build_output_dir = "cf/out"
+compatibility_date = "2026-06-03"

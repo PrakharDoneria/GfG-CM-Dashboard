@@ -16,6 +16,11 @@
 # next.js
 /.next/
 /out/
+/cf/out/
+/cf/.next
+
+# cloudflare build helper
+/.api-cloudflare-build/
 
 # production
 /build
