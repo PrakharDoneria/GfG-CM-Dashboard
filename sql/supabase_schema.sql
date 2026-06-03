@@ -107,7 +107,7 @@ RETURNS void AS $$
 BEGIN
   UPDATE profiles
   SET points = points + points_to_add
-  WHERE id = user_id;
+  WHERE id = user_id AND role = 'cm';
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 

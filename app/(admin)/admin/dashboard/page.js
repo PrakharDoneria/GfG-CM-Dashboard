@@ -29,7 +29,8 @@ export default function AdminDashboard() {
     // Total Points (Sum)
     const { data: profiles } = await supabase
       .from('profiles')
-      .select('points');
+      .select('points')
+      .eq('role', 'cm');
     
     const points = profiles?.reduce((acc, p) => acc + (p.points || 0), 0) || 0;
 

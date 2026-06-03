@@ -107,6 +107,10 @@ export default function GfGIntegration({ profile, onSyncSuccess }) {
 
   const handleConfirm = async () => {
     if (!profileData) return;
+    if (profile?.role === 'admin') {
+      setError('Administrators cannot link GfG profiles or earn points.');
+      return;
+    }
     setLoading(true);
     
     const { pts: codingPoints } = processResult(profileData.result);

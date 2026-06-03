@@ -54,9 +54,14 @@ export default function LoginPage() {
       const role = isAdmin ? 'admin' : 'cm';
       localStorage.setItem('user_role', role);
       
+      const updatePayload = { role };
+      if (role === 'admin') {
+        updatePayload.points = 0;
+      }
+      
       await supabase
         .from('profiles')
-        .update({ role })
+        .update(updatePayload)
         .eq('id', data.user.id);
 
       router.push(isAdmin ? '/admin/dashboard' : '/dashboard');
