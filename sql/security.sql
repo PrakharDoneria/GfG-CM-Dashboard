@@ -36,7 +36,7 @@ USING (auth.uid() = id);
 -- Admin can see and edit EVERYTHING
 CREATE POLICY "Admins have full access to profiles" 
 ON profiles FOR ALL 
-USING (auth.jwt() ->> 'email' LIKE '%@geeksforgeeks.org');
+USING (auth.jwt() ->> 'email' LIKE '@ieccollege.com');
 
 -- 4. SUBMISSIONS POLICIES
 -- CM can see and create their own submissions
@@ -51,7 +51,7 @@ WITH CHECK (auth.uid() = user_id);
 -- Admin can review and delete all submissions
 CREATE POLICY "Admins have full access to submissions" 
 ON submissions FOR ALL 
-USING (auth.jwt() ->> 'email' LIKE '%@geeksforgeeks.org');
+USING (auth.jwt() ->> 'email' LIKE '@ieccollege.com');
 
 -- 5. TASKS POLICIES
 -- Everyone logged in can see tasks
@@ -62,7 +62,7 @@ USING (auth.role() = 'authenticated');
 -- Only Admins can Create/Update/Delete tasks
 CREATE POLICY "Admins have full access to tasks" 
 ON tasks FOR ALL 
-USING (auth.jwt() ->> 'email' LIKE '%@geeksforgeeks.org');
+USING (auth.jwt() ->> 'email' LIKE '@ieccollege.com');
 
 -- 6. ANNOUNCEMENTS POLICIES
 -- Everyone logged in can see announcements
@@ -73,4 +73,4 @@ USING (auth.role() = 'authenticated');
 -- Only Admins can Create/Update/Delete announcements
 CREATE POLICY "Admins have full access to announcements" 
 ON announcements FOR ALL 
-USING (auth.jwt() ->> 'email' LIKE '%@geeksforgeeks.org');
+USING (auth.jwt() ->> 'email' LIKE '@ieccollege.com');

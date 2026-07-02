@@ -122,7 +122,7 @@ BEGIN
     new.raw_user_meta_data->>'full_name',
     new.raw_user_meta_data->>'college_name',
     CASE 
-      WHEN new.email LIKE '%@geeksforgeeks.org' THEN 'admin' 
+      WHEN new.email LIKE '@ieccollege.com' THEN 'admin' 
       ELSE 'cm' 
     END
   );

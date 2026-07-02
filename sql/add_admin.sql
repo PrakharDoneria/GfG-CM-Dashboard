@@ -10,7 +10,7 @@ BEGIN
     new.raw_user_meta_data->>'full_name',
     new.raw_user_meta_data->>'college_name',
     CASE 
-      WHEN new.email LIKE '%@geeksforgeeks.org' THEN 'admin' 
+      WHEN new.email LIKE '@ieccollege.com' THEN 'admin' 
       ELSE 'cm' 
     END
   );
@@ -28,7 +28,7 @@ CREATE TRIGGER on_auth_user_created
 -- Run this if you have already signed up/logged in once
 UPDATE public.profiles 
 SET role = 'admin' 
-WHERE email = 'prakhardoneria@geeksforgeeks.org';
+WHERE email = 'prakhar.btech2024@ieccollege.com';
 
 -- 3. Verify
-SELECT * FROM public.profiles WHERE email = 'prakhardoneria@geeksforgeeks.org';
+SELECT * FROM public.profiles WHERE email = 'prakhar.btech2024@ieccollege.com';
