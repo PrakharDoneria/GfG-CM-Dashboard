@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import './cms.css';
 
@@ -92,16 +92,30 @@ export default function ManageCMPage() {
     reader.onload = async (event) => {
       try {
         const text = event.target.result;
-        const lines = text.split('\n');
-        const headers = lines[0].split(',');
-        
-        const users = lines.slice(1).filter(l => l.trim()).map(line => {
+        const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+
+        if (lines.length === 0) throw new Error('CSV is empty or invalid');
+
+        const firstRow = lines[0].split(',').map(value => value.trim().toLowerCase());
+        const hasHeaderRow = firstRow.includes('full_name') || firstRow.includes('email') || firstRow.includes('college_name') || firstRow.includes('password');
+        const dataLines = hasHeaderRow ? lines.slice(1) : lines;
+
+        const getField = (values, fieldName, fallbackIndex) => {
+          if (hasHeaderRow) {
+            const fieldIndex = firstRow.indexOf(fieldName);
+            return fieldIndex >= 0 ? values[fieldIndex]?.trim() : '';
+          }
+
+          return values[fallbackIndex]?.trim() || '';
+        };
+
+        const users = dataLines.map(line => {
           const values = line.split(',');
           return {
-            full_name: values[0]?.trim(),
-            email: values[1]?.trim(),
-            college_name: values[2]?.trim(),
-            // password is optional in CSV, API will provide default
+            full_name: getField(values, 'full_name', 0),
+            email: getField(values, 'email', 1),
+            college_name: getField(values, 'college_name', 2),
+            password: getField(values, 'password', 3)
           };
         });
 
@@ -176,7 +190,7 @@ export default function ManageCMPage() {
   };
 
   const downloadTemplate = () => {
-    const headers = "full_name,email,college_name,phone_number\nJohn Doe,john@example.com,IIT Delhi,+919876543210";
+    const headers = "full_name,email,college_name,password\nJohn Doe,john@example.com,IIT Delhi,GfG@CM2026";
     const blob = new Blob([headers], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -324,7 +338,7 @@ export default function ManageCMPage() {
                 Bulk Import
               </h2>
             </div>
-            <p className="import-help">Select a CSV file to import multiple Campus Mantris at once.</p>
+            <p className="import-help">Select a CSV file with full_name, email, college_name, and optional password to import multiple Campus Mantris at once.</p>
             <div className="import-actions">
               <input type="file" accept=".csv" id="csv-upload" onChange={handleBulkImport} hidden />
               <label htmlFor="csv-upload" className="btn-primary-outline">
