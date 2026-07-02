@@ -158,7 +158,7 @@ export default function Sidebar({ role = 'cm' }) {
             <div className="support-divider"></div>
             <div className="support-item">
               <span className="support-label">Program Support</span>
-              <a href="mailto:campus@geeksforgeeks.org" className="support-link">campus@geeksforgeeks.org</a>
+              <a href="mailto:prakhar.btech2024@ieccollege.com" className="support-link">prakhar.btech2024@ieccollege.com</a>
             </div>
             <div className="support-item">
               <span className="support-label">App Support</span>
@@ -207,9 +207,9 @@ export default function Sidebar({ role = 'cm' }) {
 
       {/* Mobile Support Strip — shown above the bottom nav */}
       <div className="mobile-support-strip">
-        <a href="mailto:campus@geeksforgeeks.org" className="mobile-support-link">
+        <a href="mailto:prakhar.btech2024@ieccollege.com" className="mobile-support-link">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          campus@geeksforgeeks.org
+          prakhar.btech2024@ieccollege.com
         </a>
         <span className="mobile-support-sep">·</span>
         <a href="mailto:prakhar.doneria@geeksforgeeks.org" className="mobile-support-link">
