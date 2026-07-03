@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, safeGetSession } from '@/lib/supabase';
+import { isAdminEmail } from '@/lib/authRoles';
 
 export default function Home() {
   const router = useRouter();
@@ -18,8 +19,16 @@ export default function Home() {
       // 2. Fallback to actual session check
       const { session } = await safeGetSession();
       if (session) {
-        const isAdmin = session.user.email.endsWith('@geeksforgeeks.org');
+        const isAdmin = isAdminEmail(session.user.email);
         localStorage.setItem('user_role', isAdmin ? 'admin' : 'cm');
+
+        if (isAdmin) {
+          await supabase
+            .from('profiles')
+            .update({ role: 'admin', points: 0 })
+            .eq('id', session.user.id);
+        }
+
         router.replace(isAdmin ? '/admin/dashboard' : '/dashboard');
       } else {
         router.replace('/login');

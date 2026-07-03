@@ -1,14 +1,34 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useCachedData } from '@/lib/useCachedData';
-import { invalidateCache } from '@/lib/cacheUtils';
 import './review.css';
 
 import Modal from '@/components/Modal';
 
+async function getAuthHeaders() {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {};
+}
+
+async function fetchSubmissionsData(tab) {
+  const headers = await getAuthHeaders();
+  const response = await fetch(`/api/admin/submissions?status=${encodeURIComponent(tab)}`, {
+    cache: 'no-store',
+    headers,
+  });
+
+  const payload = await response.json();
+  if (!response.ok) {
+    throw new Error(payload?.error || 'Failed to load submissions.');
+  }
+
+  return payload.submissions || [];
+}
+
 export default function ReviewTasksPage() {
   const [activeTab, setActiveTab] = useState('pending');
+  const [submissionsData, setSubmissionsData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [notification, setNotification] = useState({ open: false, title: '', message: '', type: 'default' });
   const [reviewData, setReviewData] = useState({
     id: null,
@@ -17,35 +37,48 @@ export default function ReviewTasksPage() {
     sub: null
   });
 
-  const fetchSubmissionsData = async () => {
-    const { data } = await supabase
-      .from('submissions')
-      .select(`
-        *,
-        tasks (
-          title,
-          points_value
-        )
-      `)
-      .eq('status', activeTab)
-      .order('created_at', { ascending: true });
-
-    return data || [];
-  };
-
-  const { data: submissionsData, loading, setData } = useCachedData(`admin_review_cache_${activeTab}`, fetchSubmissionsData);
-  
-  const fetchPendingCount = async () => {
-    const { count } = await supabase
-      .from('submissions')
-      .select('*', { count: 'exact', head: true })
-      .eq('status', 'pending');
-    return count || 0;
-  };
-  const { data: pendingCountData } = useCachedData('admin_pending_count', fetchPendingCount, 30000);
-
   const submissions = submissionsData || [];
-  const pendingCount = pendingCountData ?? (activeTab === 'pending' ? submissions.length : 0);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const loadSubmissions = async (showLoading = false) => {
+      if (showLoading) {
+        setLoading(true);
+      }
+
+      try {
+        const freshData = await fetchSubmissionsData(activeTab);
+        if (isActive) {
+          setSubmissionsData(freshData);
+        }
+      } catch (err) {
+        if (isActive) {
+          setNotification({
+            open: true,
+            title: 'Error',
+            message: err.message || 'Failed to load submissions.',
+            type: 'error',
+          });
+        }
+      } finally {
+        if (isActive) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadSubmissions(true);
+
+    const refreshTimer = window.setInterval(() => {
+      loadSubmissions(false);
+    }, 10000);
+
+    return () => {
+      isActive = false;
+      window.clearInterval(refreshTimer);
+    };
+  }, [activeTab]);
 
   const showNotification = (title, message, type = 'default') => {
     setNotification({ open: true, title, message, type });
@@ -60,48 +93,34 @@ export default function ReviewTasksPage() {
     if (!id || !sub) return;
     
     try {
-      // If approved, update user points
-      if (status === 'approved') {
-        const points = sub.tasks?.points_value || 0;
-        
-        // Update CM points via RPC
-        const { error: rpcError } = await supabase.rpc('increment_points', { 
-          user_id: sub.user_id, 
-          points_to_add: points 
-        });
-        
-        if (rpcError) throw rpcError;
-      }
+      const headers = await getAuthHeaders();
+      const response = await fetch('/api/admin/submissions', {
+        method: 'PATCH',
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+        body: JSON.stringify({
+          id,
+          status,
+          feedback,
+        }),
+      });
 
-      const { error } = await supabase
-        .from('submissions')
-        .update({ 
-          status, 
-          feedback: feedback.trim() || (status === 'approved' ? 'Accepted, Good Job!' : 'Rejected'),
-          points_awarded: status === 'approved' ? (sub.tasks?.points_value || 0) : 0
-        })
-        .eq('id', id);
-
-      if (error) throw error;
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload?.error || 'Something went wrong');
 
       showNotification('Success', `Task ${status} successfully!`, 'success');
       setReviewData({ id: null, status: '', feedback: '', sub: null });
-      const freshData = await fetchSubmissionsData();
-      setData(freshData);
-      localStorage.setItem(`admin_review_cache_${activeTab}`, JSON.stringify(freshData));
-      
-      // Invalidate the specific count cache too
-      invalidateCache('admin_pending_count');
-      
-      // Invalidate dashboard caches so they reflect the new counts
-      invalidateCache('dashboard_cache');
-      invalidateCache('submissions_cache');
+      const freshData = await fetchSubmissionsData(activeTab);
+      setSubmissionsData(freshData);
     } catch (err) {
       showNotification('Error', err.message || 'Something went wrong', 'error');
     }
   };
 
-  if (loading && !submissionsData) return <div className="loading-screen">Loading submissions for review...</div>;
+  if (loading && submissions.length === 0) return <div className="loading-screen">Loading submissions for review...</div>;
 
   return (
     <div className="review-container">
@@ -112,7 +131,7 @@ export default function ReviewTasksPage() {
           className={activeTab === 'pending' ? 'active' : ''} 
           onClick={() => setActiveTab('pending')}
         >
-          Pending Review ({pendingCount})
+          Pending Review ({submissions.length})
         </button>
         <button 
           className={activeTab === 'approved' ? 'active' : ''} 

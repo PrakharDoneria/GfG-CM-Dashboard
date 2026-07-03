@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase, safeGetSession } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { isAdminEmail } from '@/lib/authRoles';
 import './login.css';
 
 // Ticker tags duplicated for seamless infinite scroll
@@ -25,9 +26,17 @@ export default function LoginPage() {
     const checkSession = async () => {
       const { session } = await safeGetSession();
       if (session) {
-        const isAdmin = session.user.email.endsWith('@geeksforgeeks.org');
+        const isAdmin = isAdminEmail(session.user.email);
         const role = isAdmin ? 'admin' : 'cm';
         localStorage.setItem('user_role', role);
+
+        if (isAdmin) {
+          await supabase
+            .from('profiles')
+            .update({ role: 'admin', points: 0 })
+            .eq('id', session.user.id);
+        }
+
         router.replace(isAdmin ? '/admin/dashboard' : '/dashboard');
       } else {
         localStorage.removeItem('user_role');
@@ -50,7 +59,7 @@ export default function LoginPage() {
 
       if (authError) throw authError;
 
-      const isAdmin = email.endsWith('@geeksforgeeks.org');
+      const isAdmin = isAdminEmail(email);
       const role = isAdmin ? 'admin' : 'cm';
       localStorage.setItem('user_role', role);
       

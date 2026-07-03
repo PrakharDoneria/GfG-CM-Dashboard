@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import { supabase, safeGetUser } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { isAdminEmail } from '@/lib/authRoles';
 import '../(dashboard)/dashboard.css';
 
 export default function AdminLayout({ children }) {
@@ -14,6 +15,15 @@ export default function AdminLayout({ children }) {
       const { user } = await safeGetUser();
       if (!user) {
         router.push('/login');
+        return;
+      }
+
+      if (isAdminEmail(user.email)) {
+        await supabase
+          .from('profiles')
+          .update({ role: 'admin', points: 0 })
+          .eq('id', user.id);
+        setLoading(false);
         return;
       }
 
