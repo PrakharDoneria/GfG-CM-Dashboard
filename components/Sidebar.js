@@ -15,7 +15,7 @@ export default function Sidebar({ role = 'cm' }) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const savedTheme = localStorage.getItem('gfg_theme');
+    const savedTheme = localStorage.getItem('app_theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
     setTheme(initialTheme);
@@ -60,7 +60,7 @@ export default function Sidebar({ role = 'cm' }) {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('gfg_theme', nextTheme);
+    localStorage.setItem('app_theme', nextTheme);
   };
 
   const handleLogout = async () => {
@@ -115,10 +115,8 @@ export default function Sidebar({ role = 'cm' }) {
       {/* Desktop Sidebar */}
       <div className="sidebar">
         <div className="sidebar-logo">
-          <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="GFG" />
           <div className="sidebar-logo-text">
-            <span className="sidebar-logo-title">Campus Mantri</span>
-            <span className="sidebar-logo-sub">GeeksforGeeks</span>
+            <span className="sidebar-logo-title" style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>SoftBridge</span>
           </div>
         </div>
         
@@ -157,12 +155,8 @@ export default function Sidebar({ role = 'cm' }) {
           <div className="sidebar-support">
             <div className="support-divider"></div>
             <div className="support-item">
-              <span className="support-label">Program Support</span>
-              <a href="mailto:prakhar.btech2024@ieccollege.com" className="support-link">prakhar.btech2024@ieccollege.com</a>
-            </div>
-            <div className="support-item">
-              <span className="support-label">App Support</span>
-              <a href="mailto:prakhar.doneria@geeksforgeeks.org" className="support-link">prakhar.doneria@geeksforgeeks.org</a>
+              <span className="support-label">Support</span>
+              <a href="mailto:support@softbridgelabs.in" className="support-link">support@softbridgelabs.in</a>
             </div>
           </div>
         </div>
@@ -171,8 +165,7 @@ export default function Sidebar({ role = 'cm' }) {
       {/* Mobile Top Bar */}
       <div className="mobile-topbar">
         <div className="mobile-logo">
-          <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="GFG" />
-          <span>CM Dashboard</span>
+          <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>SoftBridge</span>
         </div>
         <div className="mobile-topbar-actions">
           <button className="mobile-theme-btn" onClick={toggleTheme} title="Toggle dark mode">
@@ -207,14 +200,9 @@ export default function Sidebar({ role = 'cm' }) {
 
       {/* Mobile Support Strip — shown above the bottom nav */}
       <div className="mobile-support-strip">
-        <a href="mailto:prakhar.btech2024@ieccollege.com" className="mobile-support-link">
+        <a href="mailto:support@softbridgelabs.in" className="mobile-support-link">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          prakhar.btech2024@ieccollege.com
-        </a>
-        <span className="mobile-support-sep">·</span>
-        <a href="mailto:prakhar.doneria@geeksforgeeks.org" className="mobile-support-link">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          App Support
+          support@softbridgelabs.in
         </a>
       </div>
     </>

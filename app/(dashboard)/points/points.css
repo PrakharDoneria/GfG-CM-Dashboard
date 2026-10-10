@@ -66,7 +66,7 @@
   margin-left: 40px;
 }
 
-.gfg-badge-circle {
+.softbridge-badge-circle {
   width: 96px;
   height: 96px;
   background: var(--surface);
@@ -79,11 +79,11 @@
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.gfg-badge-circle:hover {
+.softbridge-badge-circle:hover {
   transform: rotate(15deg) scale(1.08);
 }
 
-.gfg-badge-circle img {
+.softbridge-badge-circle img {
   width: 52px;
   height: 52px;
 }

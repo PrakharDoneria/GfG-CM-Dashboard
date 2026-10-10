@@ -2,25 +2,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* GfG Core Colors */
-  --primary: #2f8d46;
-  --primary-hover: #247339;
-  --primary-light: #e8f5ed;
-  --primary-dark: #1a5c2e;
-  --primary-glow: rgba(47, 141, 70, 0.2);
-  --accent: #ff6b2b;
-  --accent-hover: #e55a1f;
+  /* SoftBridge Labs Core Colors */
+  --primary: #2755d4;
+  --primary-hover: #1e45b2;
+  --primary-light: #eef2fb;
+  --primary-dark: #0b1120;
+  --primary-glow: rgba(39, 85, 212, 0.2);
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
 
   /* Status */
-  --success: #2f8d46;
+  --success: #2755d4;
   --warning: #f59e0b;
   --danger: #ef4444;
   --info: #3b82f6;
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #2f8d46 0%, #43b563 100%);
-  --gradient-accent: linear-gradient(135deg, #ff6b2b 0%, #ff9a5c 100%);
-  --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --gradient-primary: linear-gradient(135deg, #2755d4 0%, #4f46e5 100%);
+  --gradient-accent: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  --gradient-dark: linear-gradient(135deg, #0f172a 0%, #0b1120 100%);
 
   /* Light theme surfaces */
   --background: #f5f7f9;
@@ -41,7 +41,7 @@
   --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
   --shadow-lg: 0 16px 40px rgba(0,0,0,0.15);
   --shadow-xl: 0 24px 60px rgba(0,0,0,0.2);
-  --shadow-green: 0 4px 20px rgba(47, 141, 70, 0.3);
+  --shadow-primary: 0 4px 20px rgba(39, 85, 212, 0.3);
 
   /* Layout */
   --radius-sm: 8px;
@@ -73,7 +73,7 @@
   --text-muted: #6e7f96;
   --border: #30363d;
   --border-hover: #444d58;
-  --primary-light: rgba(47, 141, 70, 0.18);
+  --primary-light: rgba(39, 85, 212, 0.18);
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
   --shadow: 0 4px 16px rgba(0,0,0,0.4);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
@@ -225,7 +225,7 @@ img {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-green);
+  box-shadow: var(--shadow-primary);
   transition: all var(--transition-fast);
 }
 
@@ -238,7 +238,7 @@ img {
 }
 
 .btn-primary:hover::after { background: rgba(255,255,255,0.08); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(47, 141, 70, 0.4); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39, 85, 212, 0.4); }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
@@ -283,7 +283,7 @@ img {
 .btn-outline-primary:hover {
   background: var(--primary);
   color: white;
-  box-shadow: var(--shadow-green);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-primary-outline {
@@ -367,13 +367,13 @@ img {
 .badge-medium  { background: #fef3c7; color: #92400e; }
 .badge-low     { background: #dcfce7; color: #166534; }
 
-[data-theme='dark'] .badge-success { background: rgba(47, 141, 70, 0.2); color: #6ee7a0; }
+[data-theme='dark'] .badge-success { background: rgba(39, 85, 212, 0.2); color: #6ee7a0; }
 [data-theme='dark'] .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
 [data-theme='dark'] .badge-danger  { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
 [data-theme='dark'] .badge-info    { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
 [data-theme='dark'] .badge-high    { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
 [data-theme='dark'] .badge-medium  { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
-[data-theme='dark'] .badge-low     { background: rgba(47, 141, 70, 0.2); color: #6ee7a0; }
+[data-theme='dark'] .badge-low     { background: rgba(39, 85, 212, 0.2); color: #6ee7a0; }
 
 /* ===== FORM ELEMENTS ===== */
 .form-group {
@@ -480,11 +480,11 @@ img {
 }
 
 .status-pill.pending  { background: rgba(245,158,11,0.12); color: #b45309; }
-.status-pill.approved { background: rgba(47,141,70,0.12);  color: #166534; }
+.status-pill.approved { background: rgba(39, 85, 212,0.12);  color: #166534; }
 .status-pill.rejected { background: rgba(239,68,68,0.12);  color: #991b1b; }
 
 [data-theme='dark'] .status-pill.pending  { background: rgba(245,158,11,0.2); color: #fcd34d; }
-[data-theme='dark'] .status-pill.approved { background: rgba(47,141,70,0.2);  color: #6ee7a0; }
+[data-theme='dark'] .status-pill.approved { background: rgba(39, 85, 212,0.2);  color: #6ee7a0; }
 [data-theme='dark'] .status-pill.rejected { background: rgba(239,68,68,0.2);  color: #fca5a5; }
 
 /* ===== GRID UTILITIES ===== */

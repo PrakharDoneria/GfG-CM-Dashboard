@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "GFG Campus Mantri | Task Tracker",
-  description: "Official task tracking dashboard for GeeksforGeeks Campus Mantri Program.",
+  title: "SoftBridge Labs | Task Tracker",
+  description: "Official task tracking dashboard for SoftBridge Labs.",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
 };
 

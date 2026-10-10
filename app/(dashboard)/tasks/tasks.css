@@ -68,7 +68,7 @@
 .task-stat-card.blue .task-stat-icon   { background: rgba(59,130,246,0.1);   color: #3b82f6; }
 .task-stat-card.purple .task-stat-icon { background: rgba(139,92,246,0.1);   color: #8b5cf6; }
 .task-stat-card.orange .task-stat-icon { background: rgba(245,158,11,0.1);   color: #f59e0b; }
-.task-stat-card.green .task-stat-icon  { background: rgba(47,141,70,0.1);    color: var(--primary); }
+.task-stat-card.green .task-stat-icon  { background: rgba(39, 85, 212,0.1);    color: var(--primary); }
 
 .task-stat-info .label {
   display: block;
@@ -170,7 +170,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  border-bottom: 1px solid rgba(47,141,70,0.2);
+  border-bottom: 1px solid rgba(39, 85, 212,0.2);
   position: relative;
   overflow: hidden;
 }
@@ -180,7 +180,7 @@
   position: absolute;
   top: -60px; left: -60px;
   width: 220px; height: 220px;
-  background: radial-gradient(circle, rgba(47,141,70,0.2) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(39, 85, 212,0.2) 0%, transparent 65%);
   pointer-events: none;
 }
 

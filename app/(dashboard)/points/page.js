@@ -13,12 +13,12 @@ export default function PointsSchemePage() {
           </div>
           <h1 className="points-hero-title">Points Allocation Scheme</h1>
           <p className="points-hero-subtitle">
-            Earn points by solving coding problems and contributing to the GeeksforGeeks community.
+            Earn points by solving coding problems and contributing to the SoftBridge Communtiy.
           </p>
         </div>
         <div className="points-hero-right">
-          <div className="gfg-badge-circle">
-            <img src="https://media.geeksforgeeks.org/gfg-gg-logo.svg" alt="GfG" />
+          <div className="softbridge-badge-circle">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/019/858/788/small/profile-flat-color-outline-icon-free-png.png" alt="SoftBridge" />
           </div>
         </div>
       </div>
@@ -28,12 +28,12 @@ export default function PointsSchemePage() {
         <div className="points-card animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <div className="card-header">
             <div className="icon-wrapper practice-color">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6M12 2v20"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6M12 2v20" /></svg>
             </div>
-            <h2>GfG Practice Submissions</h2>
+            <h2>SoftBridge Practice Submissions</h2>
           </div>
           <p className="card-desc">
-            Points are awarded automatically based on the difficulty rating of the problems you successfully solve on the GeeksforGeeks Practice platform.
+            Points are awarded automatically based on the difficulty rating of the problems you successfully solve on the SoftBridgePractice platform.
           </p>
 
           <div className="scheme-list">
@@ -56,40 +56,6 @@ export default function PointsSchemePage() {
           </div>
         </div>
 
-        {/* Community Points Column */}
-        <div className="points-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <div className="card-header">
-            <div className="icon-wrapper community-color">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            </div>
-            <h2>GfG Community Contributions</h2>
-          </div>
-          <p className="card-desc">
-            Publish high-quality articles, writeups, and experiences on the GeeksforGeeks community portal. Points are scaled by post engagement.
-          </p>
-
-          <div className="scheme-list">
-            <div className="scheme-item">
-              <div className="contribution-type">Base Post Published</div>
-              <div className="points-val">+15 pts <span className="per-unit">/ post</span></div>
-            </div>
-            <div className="scheme-item">
-              <div className="contribution-type">Community Likes Received</div>
-              <div className="points-val">+2 pts <span className="per-unit">/ like</span></div>
-            </div>
-            <div className="scheme-item">
-              <div className="contribution-type">Community Comments Received</div>
-              <div className="points-val">+5 pts <span className="per-unit">/ comment</span></div>
-            </div>
-          </div>
-
-          <div className="formula-box">
-            <span className="formula-title">Points Formula</span>
-            <code className="formula-code">
-              Score = (Posts × 15) + (Likes × 2) + (Comments × 5)
-            </code>
-          </div>
-        </div>
       </div>
 
       {/* Rules Card */}
@@ -106,7 +72,7 @@ export default function PointsSchemePage() {
               <strong>Active Timeframe:</strong> Only submissions resolved and posts published strictly on and after <strong>May 17, 2026</strong> are eligible for point syncs.
             </li>
             <li>
-              <strong>Handle Integrity:</strong> Once a GeeksforGeeks handle is linked to your dashboard profile, it is locked and cannot be changed or transferred.
+              <strong>Handle Integrity:</strong> Once a SoftBridgehandle is linked to your dashboard profile, it is locked and cannot be changed or transferred.
             </li>
             <li>
               <strong>Synchronization:</strong> Points can be updated instantly from your dashboard profile sync actions, or verified by administrators at any time.

@@ -52,7 +52,7 @@ export default function AdminLayout({ children }) {
       <main className="dashboard-main">
         <header className="dashboard-header">
           <div className="header-left">
-            <span className="header-breadcrumb">GeeksforGeeks</span>
+            <span className="header-breadcrumb">SoftBridge Labs</span>
             <span className="header-page-name">Admin Portal</span>
           </div>
           <div className="header-right">

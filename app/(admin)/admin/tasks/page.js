@@ -143,7 +143,7 @@ export default function AdminTasksPage() {
                 type="text" 
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
-                placeholder="e.g. LinkedIn Post about GFG" 
+                placeholder="e.g. LinkedIn Post about SoftBridge" 
                 required 
               />
             </div>

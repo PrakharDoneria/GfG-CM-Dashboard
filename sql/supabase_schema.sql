@@ -1,4 +1,4 @@
--- Supabase Schema for GfG Campus Mantri Program Dashboard
+-- Supabase Schema for GfG Campus Lead Program Dashboard
 
 -- 1. Profiles Table (Extends Auth.Users)
 CREATE TABLE IF NOT EXISTS profiles (

@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useCachedData } from '@/lib/useCachedData';
-import GfGIntegration from '@/components/GfGIntegration';
 import './overview.css';
 
 export default function UserDashboard() {
@@ -83,7 +82,7 @@ export default function UserDashboard() {
             {profile.full_name?.split(' ').map(n => n[0]).join('') || 'CM'}
           </div>
           <div className="welcome-text">
-            <h1>Welcome, {profile.full_name?.split(' ')[0] || 'User'}! 👋</h1>
+            <h1>Welcome, {profile.full_name?.split(' ')[0] || 'User'}!</h1>
             <div className="college-info">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
               <span>{profile.college_name || 'Your College Name'}</span>
@@ -146,14 +145,6 @@ export default function UserDashboard() {
             <span className="subtext">From approved tasks</span>
           </div>
         </div>
-      </div>
-
-      <div className="usp-banner animate-fade-in">
-        <div className="usp-badge">🔥 PLATFORM USP</div>
-        <GfGIntegration profile={profile} onSyncSuccess={() => {
-           // Refresh data to show new points
-           window.location.reload(); 
-        }} />
       </div>
 
       <div className="progress-section card">

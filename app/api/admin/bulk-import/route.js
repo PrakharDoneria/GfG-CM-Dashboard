@@ -24,7 +24,7 @@ export async function POST(request) {
           // 1. Create user in Auth
           const { data, error: authError } = await supabaseAdmin.auth.admin.createUser({
             email: user.email,
-            password: user.password || 'GfG@CM2026', // Default password if none provided
+            password: user.password || 'SB@CM2026', // Default password if none provided
             email_confirm: true, // AUTO-CONFIRM EMAIL (Task 1)
             user_metadata: {
               full_name: user.full_name,

@@ -19,13 +19,13 @@ export default function DashboardLayout({ children }) {
         return;
       }
       setUser(user);
-      
+
       const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
-      
+
       setProfile(profile);
       setLoading(false);
     };
@@ -41,23 +41,24 @@ export default function DashboardLayout({ children }) {
       <main className="dashboard-main">
         <header className="dashboard-header">
           <div className="header-left">
-            <span className="header-breadcrumb">GfG Campus Mantri</span>
+            <span className="header-breadcrumb">SoftBridge Labs Campus Lead</span>
             <span className="header-page-name">Dashboard</span>
           </div>
           <div className="header-right">
             {profile?.role === 'cm' && (
               <div className="user-points">
-                <span>🏆</span>
+                <span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="8" r="7" />
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                  </svg>
+                </span>
                 <span>{profile?.points || 0} pts</span>
               </div>
             )}
             <div className="header-user">
               <div className="header-avatar" style={{ overflow: 'hidden', padding: 0 }}>
-                {profile?.gfg_profile_img ? (
-                  <img src={profile.gfg_profile_img} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                ) : (
-                  (profile?.full_name || user?.email || 'U').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase()
-                )}
+                {(profile?.full_name || user?.email || 'U').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
               </div>
               <div>
                 <div className="welcome">Welcome back</div>

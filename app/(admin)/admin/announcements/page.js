@@ -19,7 +19,7 @@ export default function AdminAnnouncementsPage() {
       .from('announcements')
       .select('*')
       .order('created_at', { ascending: false });
-    
+
     return data || [];
   };
 
@@ -37,7 +37,7 @@ export default function AdminAnnouncementsPage() {
     const { error } = await supabase
       .from('announcements')
       .insert({ ...formData, created_by: user.id });
-    
+
     if (!error) {
       showNotification('Success', 'Announcement published successfully!', 'success');
       setFormData({ title: '', body: '', image_url: '' });
@@ -57,7 +57,7 @@ export default function AdminAnnouncementsPage() {
     const id = confirmModal.id;
     await supabase.from('announcements').delete().eq('id', id);
     setConfirmModal({ open: false, id: null });
-    
+
     const freshData = await fetchAnnouncementsData();
     setData(freshData);
     localStorage.setItem('admin_announcements_cache', JSON.stringify(freshData));
@@ -70,7 +70,7 @@ export default function AdminAnnouncementsPage() {
     <div className="admin-tasks-container">
       <div className="page-header">
         <h1 className="page-title">Manage Announcements</h1>
-        <p className="subtext">Broadcast important updates to all Campus Mantris</p>
+        <p className="subtext">Broadcast important updates to all Campus Leads</p>
       </div>
 
       <div className="admin-tasks-grid">
@@ -84,36 +84,36 @@ export default function AdminAnnouncementsPage() {
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="form-group">
               <label>Announcement Title</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={formData.title}
-                onChange={(e) => setFormData({...formData, title: e.target.value})}
-                placeholder="e.g., May Submission Deadline Extended" 
-                required 
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder="e.g., May Submission Deadline Extended"
+                required
               />
             </div>
-            
+
             <div className="form-group">
               <label>Body Content</label>
-              <textarea 
+              <textarea
                 value={formData.body}
-                onChange={(e) => setFormData({...formData, body: e.target.value})}
-                placeholder="Write the full announcement details here..." 
-                required 
+                onChange={(e) => setFormData({ ...formData, body: e.target.value })}
+                placeholder="Write the full announcement details here..."
+                required
               />
             </div>
 
             <div className="form-group">
               <label>External Link (Optional)</label>
-              <input 
-                type="url" 
+              <input
+                type="url"
                 value={formData.image_url}
-                onChange={(e) => setFormData({...formData, image_url: e.target.value})}
-                placeholder="https://..." 
+                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                placeholder="https://..."
               />
             </div>
 
-            <button type="submit" className="btn-primary" style={{marginTop: '8px'}}>
+            <button type="submit" className="btn-primary" style={{ marginTop: '8px' }}>
               Publish Announcement
             </button>
           </form>
@@ -121,10 +121,10 @@ export default function AdminAnnouncementsPage() {
 
         <div className="task-list-section">
           <h2>
-             <div className="section-title-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-             </div>
-             Recent History
+            <div className="section-title-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            </div>
+            Recent History
           </h2>
           <div className="admin-task-list">
             {announcements.length > 0 ? announcements.map(ann => (
@@ -132,7 +132,7 @@ export default function AdminAnnouncementsPage() {
                 <div className="task-info">
                   <h3>{ann.title}</h3>
                   <p>{ann.body.substring(0, 100)}{ann.body.length > 100 ? '...' : ''}</p>
-                  <div className="announcement-date-admin" style={{marginTop: '8px'}}>
+                  <div className="announcement-date-admin" style={{ marginTop: '8px' }}>
                     Posted on {new Date(ann.created_at).toLocaleDateString()}
                   </div>
                 </div>
@@ -154,19 +154,19 @@ export default function AdminAnnouncementsPage() {
       </div>
 
       {/* Confirmation Modal */}
-      <Modal isOpen={confirmModal.open} onClose={() => setConfirmModal({open:false, id:null})} title="Delete Announcement">
-        <p style={{textAlign: 'center', marginBottom: '24px'}}>Are you sure you want to delete this broadcast? This cannot be undone.</p>
-        <div style={{display: 'flex', gap: '12px'}}>
-          <button className="btn-primary" style={{flex: 1, backgroundColor: '#ef4444', borderColor: '#ef4444'}} onClick={handleDelete}>Delete Permanently</button>
-          <button className="btn-secondary" style={{flex: 1}} onClick={() => setConfirmModal({open:false, id:null})}>Cancel</button>
+      <Modal isOpen={confirmModal.open} onClose={() => setConfirmModal({ open: false, id: null })} title="Delete Announcement">
+        <p style={{ textAlign: 'center', marginBottom: '24px' }}>Are you sure you want to delete this broadcast? This cannot be undone.</p>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button className="btn-primary" style={{ flex: 1, backgroundColor: '#ef4444', borderColor: '#ef4444' }} onClick={handleDelete}>Delete Permanently</button>
+          <button className="btn-secondary" style={{ flex: 1 }} onClick={() => setConfirmModal({ open: false, id: null })}>Cancel</button>
         </div>
       </Modal>
 
       {/* Notification Modal */}
-      <Modal isOpen={notification.open} onClose={() => setNotification({open:false})} title={notification.title} type={notification.type}>
-        <p style={{textAlign: 'center', fontSize: '1.1rem'}}>{notification.message}</p>
-        <div style={{marginTop: '24px', display: 'flex', justifyContent: 'center'}}>
-          <button className="btn-primary" onClick={() => setNotification({open:false})}>OK</button>
+      <Modal isOpen={notification.open} onClose={() => setNotification({ open: false })} title={notification.title} type={notification.type}>
+        <p style={{ textAlign: 'center', fontSize: '1.1rem' }}>{notification.message}</p>
+        <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center' }}>
+          <button className="btn-primary" onClick={() => setNotification({ open: false })}>OK</button>
         </div>
       </Modal>
     </div>

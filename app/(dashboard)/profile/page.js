@@ -8,7 +8,7 @@ import './profile.css';
 export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [notification, setNotification] = useState({ open: false, title: '', message: '', type: 'default' });
-  
+
   const fetchProfile = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     const { data } = await supabase
@@ -37,7 +37,7 @@ export default function ProfilePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    
+
     const { data: { user } } = await supabase.auth.getUser();
     const { error } = await supabase
       .from('profiles')
@@ -64,19 +64,15 @@ export default function ProfilePage() {
   return (
     <div className="profile-container animate-fade-in">
       <h1 className="page-title">My Profile</h1>
-      
+
       <div className="profile-card card">
         <div className="profile-header">
           <div className="profile-avatar-xl" style={{ overflow: 'hidden', padding: 0 }}>
-            {profile?.gfg_profile_img ? (
-              <img src={profile.gfg_profile_img} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-            ) : (
-              profile?.full_name?.split(' ').map(n => n[0]).join('') || 'CM'
-            )}
+            {profile?.full_name?.split(' ').map(n => n[0]).join('') || 'CM'}
           </div>
           <div className="profile-main-info">
             <h2>{profile?.full_name}</h2>
-            <p className="profile-role">Campus Mantri • Active</p>
+            <p className="profile-role">Campus Lead • Active</p>
             <div className="profile-stats-mini">
               <div className="mini-stat">
                 <span className="val">{profile?.points || 0}</span>
@@ -94,10 +90,10 @@ export default function ProfilePage() {
           <div className="form-section-title">Personal Details</div>
           <div className="form-group">
             <label>Full Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={formData.full_name}
-              onChange={(e) => setFormData({...formData, full_name: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
               placeholder="Your full name"
               required
             />
@@ -105,10 +101,10 @@ export default function ProfilePage() {
 
           <div className="form-group">
             <label>College Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={formData.college_name}
-              onChange={(e) => setFormData({...formData, college_name: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, college_name: e.target.value })}
               placeholder="Enter your college"
               required
             />
@@ -119,17 +115,17 @@ export default function ProfilePage() {
             <label>Email Address</label>
             <div className="readonly-value">{profile?.email || 'N/A'}</div>
           </div>
-          
+
           <button type="submit" className="btn-primary" disabled={saving}>
             {saving ? 'Saving Changes...' : 'Save Profile Changes'}
           </button>
         </form>
       </div>
 
-      <Modal isOpen={notification.open} onClose={() => setNotification({open:false})} title={notification.title} type={notification.type}>
-        <p style={{textAlign: 'center'}}>{notification.message}</p>
-        <div style={{marginTop: '24px', display: 'flex', justifyContent: 'center'}}>
-          <button className="btn-primary" onClick={() => setNotification({open:false})}>Got it</button>
+      <Modal isOpen={notification.open} onClose={() => setNotification({ open: false })} title={notification.title} type={notification.type}>
+        <p style={{ textAlign: 'center' }}>{notification.message}</p>
+        <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center' }}>
+          <button className="btn-primary" onClick={() => setNotification({ open: false })}>Got it</button>
         </div>
       </Modal>
     </div>

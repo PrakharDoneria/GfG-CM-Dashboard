@@ -10,11 +10,11 @@ export default function ManageCMPage() {
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCM, setSelectedCM] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  
+
   const [notification, setNotification] = useState({ open: false, title: '', message: '', type: 'default' });
 
   const [newCm, setNewCm] = useState({
@@ -35,7 +35,7 @@ export default function ManageCMPage() {
 
   const { data: cms, loading, setData } = useCachedData('admin_cms_cache', fetchCMs);
 
-  const filteredCms = (cms || []).filter(cm => 
+  const filteredCms = (cms || []).filter(cm =>
     cm.full_name?.toLowerCase().includes(search.toLowerCase()) ||
     cm.email?.toLowerCase().includes(search.toLowerCase()) ||
     cm.college_name?.toLowerCase().includes(search.toLowerCase())
@@ -59,7 +59,7 @@ export default function ManageCMPage() {
       const response = await fetch('/api/admin/bulk-import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           users: [{
             email: newCm.email.trim(),
             password: newCm.password.trim(),
@@ -68,12 +68,12 @@ export default function ManageCMPage() {
           }]
         })
       });
-      
+
       const result = await response.json();
-      
+
       if (result.errors?.length > 0) throw new Error(result.errors[0].message);
       if (result.error) throw new Error(result.error);
-      
+
       showNotification('Success', 'CM created successfully (Email auto-confirmed)!', 'success');
       setNewCm({ email: '', full_name: '', college_name: '', password: '' });
       const freshData = await fetchCMs();
@@ -130,14 +130,14 @@ export default function ManageCMPage() {
         });
 
         const result = await response.json();
-        
+
         if (result.error) throw new Error(result.error);
 
         const successCount = result.success?.length || 0;
         const errorCount = result.errors?.length || 0;
 
         showNotification(
-          'Import Complete', 
+          'Import Complete',
           `Successfully imported ${successCount} users. ${errorCount} errors.`,
           errorCount > 0 ? 'error' : 'success'
         );
@@ -190,7 +190,7 @@ export default function ManageCMPage() {
   };
 
   const downloadTemplate = () => {
-    const headers = "full_name,email,college_name,password\nJohn Doe,john@example.com,IIT Delhi,GfG@CM2026";
+    const headers = "full_name,email,college_name,password\nJohn Doe,john@example.com,IIT Delhi,SB@CM2026";
     const blob = new Blob([headers], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -204,11 +204,11 @@ export default function ManageCMPage() {
   return (
     <div className="admin-cms-container">
       <div className="admin-header-row">
-        <h1 className="page-title">Manage Campus Mantris</h1>
+        <h1 className="page-title">Manage Campus Leads</h1>
         <div className="search-box">
-          <input 
-            type="text" 
-            placeholder="Search by name, email or college..." 
+          <input
+            type="text"
+            placeholder="Search by name, email or college..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -235,8 +235,8 @@ export default function ManageCMPage() {
         <div className="cm-list-section card">
           <div className="card-header">
             <h2>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight: '8px'}}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              All Campus Mantris ({filteredCms.length})
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '8px' }}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              All Campus Leads ({filteredCms.length})
             </h2>
           </div>
           <div className="cm-table-wrapper">
@@ -252,11 +252,11 @@ export default function ManageCMPage() {
               <tbody>
                 {paginatedCms.length > 0 ? paginatedCms.map(cm => (
                   <tr key={cm.id}>
-                    <td><strong>{cm.full_name}</strong><br/><small>{cm.email}</small></td>
+                    <td><strong>{cm.full_name}</strong><br /><small>{cm.email}</small></td>
                     <td>{cm.college_name}</td>
                     <td><span className="points-pill">{cm.points}</span></td>
                     <td>
-                      <div style={{display: 'flex', gap: '8px'}}>
+                      <div style={{ display: 'flex', gap: '8px' }}>
                         <button className="text-btn" onClick={() => handleViewDetails(cm)}>View</button>
                         <button className="text-btn" onClick={() => handleEditCM(cm)}>Edit</button>
                       </div>
@@ -264,34 +264,34 @@ export default function ManageCMPage() {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="4" style={{textAlign: 'center', padding: '40px', color: 'var(--text-muted)'}}>No mantris found</td>
+                    <td colSpan="4" style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>No mantris found</td>
                   </tr>
                 )}
               </tbody>
             </table>
-            
+
             {totalPages > 1 && (
               <div className="pagination">
-                <button 
-                  className="pagination-btn" 
+                <button
+                  className="pagination-btn"
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </button>
-                
+
                 {[...Array(totalPages)].map((_, i) => (
-                  <button 
-                    key={i} 
+                  <button
+                    key={i}
                     className={`pagination-btn ${currentPage === i + 1 ? 'active' : ''}`}
                     onClick={() => setCurrentPage(i + 1)}
                   >
                     {i + 1}
                   </button>
                 ))}
-                
-                <button 
-                  className="pagination-btn" 
+
+                <button
+                  className="pagination-btn"
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                 >
@@ -313,21 +313,21 @@ export default function ManageCMPage() {
             <form onSubmit={handleAddCM} className="admin-form">
               <div className="form-group">
                 <label>Full Name</label>
-                <input type="text" placeholder="John Doe" value={newCm.full_name || ''} onChange={(e) => setNewCm({...newCm, full_name: e.target.value})} required />
+                <input type="text" placeholder="John Doe" value={newCm.full_name || ''} onChange={(e) => setNewCm({ ...newCm, full_name: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Email Address</label>
-                <input type="email" placeholder="john@example.com" value={newCm.email || ''} onChange={(e) => setNewCm({...newCm, email: e.target.value})} required />
+                <input type="email" placeholder="john@example.com" value={newCm.email || ''} onChange={(e) => setNewCm({ ...newCm, email: e.target.value })} required />
               </div>
               <div className="form-group">
                 <label>Default Password</label>
-                <input type="password" placeholder="••••••••" value={newCm.password || ''} onChange={(e) => setNewCm({...newCm, password: e.target.value})} required minLength={6} />
+                <input type="password" placeholder="••••••••" value={newCm.password || ''} onChange={(e) => setNewCm({ ...newCm, password: e.target.value })} required minLength={6} />
               </div>
               <div className="form-group">
                 <label>University / College</label>
-                <input type="text" placeholder="IIT Delhi" value={newCm.college_name || ''} onChange={(e) => setNewCm({...newCm, college_name: e.target.value})} required />
+                <input type="text" placeholder="IIT Delhi" value={newCm.college_name || ''} onChange={(e) => setNewCm({ ...newCm, college_name: e.target.value })} required />
               </div>
-              <button type="submit" className="btn-primary w-full" style={{marginTop: '12px'}}>Create CM Profile</button>
+              <button type="submit" className="btn-primary w-full" style={{ marginTop: '12px' }}>Create CM Profile</button>
             </form>
           </div>
 
@@ -338,7 +338,7 @@ export default function ManageCMPage() {
                 Bulk Import
               </h2>
             </div>
-            <p className="import-help">Select a CSV file with full_name, email, college_name, and optional password to import multiple Campus Mantris at once.</p>
+            <p className="import-help">Select a CSV file with full_name, email, college_name, and optional password to import multiple Campus Leads at once.</p>
             <div className="import-actions">
               <input type="file" accept=".csv" id="csv-upload" onChange={handleBulkImport} hidden />
               <label htmlFor="csv-upload" className="btn-primary-outline">
@@ -353,20 +353,20 @@ export default function ManageCMPage() {
       </div>
 
       {/* Details/Edit Modal */}
-      <Modal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        title={isEditing ? 'Edit Campus Mantri' : 'CM Details'}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={isEditing ? 'Edit Campus Lead' : 'CM Details'}
       >
         {selectedCM && (
           <div className="cm-details-modal">
             <div className="form-group">
               <label>Full Name</label>
-              <input 
-                type="text" 
-                value={selectedCM.full_name || ''} 
+              <input
+                type="text"
+                value={selectedCM.full_name || ''}
                 disabled={!isEditing}
-                onChange={(e) => setSelectedCM({...selectedCM, full_name: e.target.value})}
+                onChange={(e) => setSelectedCM({ ...selectedCM, full_name: e.target.value })}
               />
             </div>
             <div className="form-group">
@@ -375,26 +375,26 @@ export default function ManageCMPage() {
             </div>
             <div className="form-group">
               <label>College Name</label>
-              <input 
-                type="text" 
-                value={selectedCM.college_name || ''} 
+              <input
+                type="text"
+                value={selectedCM.college_name || ''}
                 disabled={!isEditing}
-                onChange={(e) => setSelectedCM({...selectedCM, college_name: e.target.value})}
+                onChange={(e) => setSelectedCM({ ...selectedCM, college_name: e.target.value })}
               />
             </div>
             <div className="form-group">
               <label>Points</label>
-              <input 
-                type="number" 
-                value={selectedCM.points === null ? 0 : selectedCM.points} 
+              <input
+                type="number"
+                value={selectedCM.points === null ? 0 : selectedCM.points}
                 disabled={!isEditing}
-                onChange={(e) => setSelectedCM({...selectedCM, points: parseInt(e.target.value) || 0})}
+                onChange={(e) => setSelectedCM({ ...selectedCM, points: parseInt(e.target.value) || 0 })}
               />
             </div>
             {isEditing && (
-              <div style={{marginTop: '20px', display: 'flex', gap: '12px'}}>
-                <button className="btn-primary" style={{flex: 1}} onClick={handleUpdateCM}>Save Changes</button>
-                <button className="btn-secondary" style={{flex: 1}} onClick={() => setIsModalOpen(false)}>Cancel</button>
+              <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
+                <button className="btn-primary" style={{ flex: 1 }} onClick={handleUpdateCM}>Save Changes</button>
+                <button className="btn-secondary" style={{ flex: 1 }} onClick={() => setIsModalOpen(false)}>Cancel</button>
               </div>
             )}
           </div>
@@ -402,14 +402,14 @@ export default function ManageCMPage() {
       </Modal>
 
       {/* Global Notification Modal */}
-      <Modal 
-        isOpen={notification.open} 
-        onClose={() => setNotification({ ...notification, open: false })} 
+      <Modal
+        isOpen={notification.open}
+        onClose={() => setNotification({ ...notification, open: false })}
         title={notification.title}
         type={notification.type}
       >
-        <p style={{textAlign: 'center', fontSize: '1.1rem'}}>{notification.message}</p>
-        <div style={{marginTop: '24px', display: 'flex', justifyContent: 'center'}}>
+        <p style={{ textAlign: 'center', fontSize: '1.1rem' }}>{notification.message}</p>
+        <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center' }}>
           <button className="btn-primary" onClick={() => setNotification({ ...notification, open: false })}>Close</button>
         </div>
       </Modal>
